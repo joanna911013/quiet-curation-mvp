@@ -670,15 +670,19 @@ Rationale Examples (10)
 
 ## DESIGN Lane
 **Plan**
-- [ ] Pairing block final spec validation (verse + rationale + attribution placement)
-- [ ] Fallback label micro-rule (quiet, not alarming) — confirm implemented text
+- [x] Pairing component spec locked (Today vs Detail) with hierarchy + tone guidance
+- [x] Fallback behavior decision (no pairing available) finalized: omit pairing section, no copy
+- [x] Wireframe annotations added for Today + Detail pairing placement
 
 **Done**
-- 
+- Pairing component spec published: `docs/design/pairing_component_spec.md`.
+- Wireframe annotations published: `docs/design/wireframes/day3_pairing_annotations.md`.
+- Detail rationale section defined with heading "Why this pairing?" and 2-4 line rationale cap.
+- Fallback behavior: omit pairing section entirely when no pairing is available; no error/empty copy in the pairing area.
 **Blocked**
 - 
 **Next**
-- 
+- DEV: implement pairing component spec during UI pass (Today + Detail).
 
 ---
 

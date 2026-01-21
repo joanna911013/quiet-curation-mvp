@@ -8,7 +8,8 @@
 ## Global Rules
 - Reference line is always shown and always single-line with ellipsis on overflow.
 - Use the same verse block container on Today and Detail; only content changes.
-- Use translation label from DB.
+- Use translation label from DB. If translation label is missing, do not render the verse block (treat as verse missing state).
+
 
 ## Today (Preview)
 - Show reference line + verse text preview; rationale is not shown.
@@ -21,7 +22,9 @@
 ## Detail
 - Reference line: always visible, single line.
 - Verse text: full text, no truncation; preserve line breaks (pre-line or paragraph split).
-- Rationale: show below verse text; target 1-2 sentences. If longer, clamp to 3 lines with ellipsis (no expand in v1).
+- Rationale section:
+  - Title: "Why this pairing?"
+  - Body: short rationale, target 2-4 lines; clamp to 4 lines with ellipsis (no expand in v1).
 - Missing states:
   - Verse missing: show "Verse unavailable right now." + "Pull to refresh or try again." (1-2 lines total).
   - Rationale missing: hide rationale section entirely.
@@ -29,10 +32,12 @@
 ## Typography and Spacing (Mobile-First)
 - Reference line: 12px, weight 600, line-height 1.4, color #6b6b6b.
 - Verse text: 17px, weight 400-500, line-height 1.6, color #111111; paragraph spacing 8px.
-- Rationale: 14px, weight 400, line-height 1.5, color #5c5c5c; no italics.
+- Rationale title: 13px, weight 600, line-height 1.4, color #4b4b4b.
+- Rationale body: 14px, weight 400, line-height 1.5, color #5c5c5c; no italics.
 - Spacing:
   - Reference -> verse gap: 8px.
-  - Verse -> rationale gap: 12px.
+  - Verse -> rationale title gap: 14px.
+  - Rationale title -> rationale body gap: 6px.
   - Verse block padding: 16px.
   - Verse block margin to next block: 16px.
 
@@ -45,12 +50,12 @@
 ## States
 - Loading Today: skeleton with reference line + 2 verse lines.
 - Loading Detail: skeleton with reference line + 3 verse lines + 2 rationale lines.
-- Empty (no pairing after fallback): "No pairing yet. Check back later." + Retry action.
-- Error: "Unable to load verse. Check connection and retry." + Retry action.
-- Unapproved pairing: treat as empty unless fallback data exists.
+- No pairing available: omit pairing section entirely; no placeholder text.
+- Error: use screen-level error state; do not show pairing-level error copy.
 
 ## DEV Implementation Checklist
 - Apply Today truncation rules (2-line clamp + 140-char fallback + ellipsis) and hide rationale.
-- Detail shows full verse text; rationale clamps to 3 lines; hide rationale if missing.
+- Detail shows full verse text; rationale heading "Why this pairing?" and clamp to 4 lines; hide rationale if missing.
 - Add label row handling (fallback + approved-only) per spec.
-- Apply typography + spacing tokens and state copy per spec.
+- Omit pairing section entirely when no pairing is available (no placeholder text).
+- Apply typography + spacing tokens per spec.
