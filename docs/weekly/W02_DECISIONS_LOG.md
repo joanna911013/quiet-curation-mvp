@@ -75,6 +75,11 @@ Rules:
 **Why:** Prevent empty states from blocking access to the Detail view while content is still being approved per locale.  
 **Impact:** Home performs a locale-filtered query first, then retries without the locale filter when results are empty.
 
+## 2026-01-21
+**Decision:** Quiet invite cron only uses approved pairings for today; if none exist, fallback uses `FALLBACK_CURATION_ID` without erroring.  
+**Why:** Prevent accidental sends of unreviewed content while keeping the daily pipeline stable.  
+**Impact:** Cron pairing fetch must filter `status='approved'` and tolerate no results; manual approval happens via SQL or future admin tooling.
+
 
 ## Template
 ## YYYY-MM-DD

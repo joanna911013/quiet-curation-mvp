@@ -634,27 +634,37 @@ Rationale Examples (10)
 **Plan**
 - [ ] Pairings pipeline (draft → approved)
   - [ ] Enforce unique `(pairing_date, locale)` behavior (update vs insert policy)
-  - [ ] Ensure non-admin reads are approved-only
+  - [x] Ensure non-admin reads are approved-only
 - [ ] Today query joins reliably
   - [ ] `pairings` + `verses` join must always return: `verse_text`, `canonical_ref`, `translation`
-  - [ ] Define join-failure behavior (fallback reason)
+  - [x] Define join-failure behavior (fallback reason)
 - [ ] Delivery dedupe (stability)
-  - [ ] Ensure “quiet invite” is deduped to 1/day/user (no double send)
-  - [ ] Deep link routes remain valid (Today or Detail)
+  - [x] Ensure “quiet invite” is deduped to 1/day/user (no double send)
+  - [x] Deep link routes remain valid (Today or Detail)
+- [x] Quiet invite email pipeline (Task D)
+  - [x] Template renders with pairing optional
+  - [x] Provider abstraction + dry-run default
+  - [x] Cron uses pairing/verse when available
+  - [x] Missing recipient emails skipped (no failure)
 - [ ] Minimal Saved stability check (regression)
   - [ ] Save/Unsave still works after Today join changes
 
 **Done**
-- 
+- [x] Delivery dedupe confirmed via script (1st run inserts, 2nd run skips).
+- [x] Deep-link login redirect works with `/login?redirect=/c/[id]`.
+- [x] Quiet invite email sending wired (template + provider abstraction + dry-run default).
+- [x] Cron uses approved-only pairing for today; falls back to env var if none.
+- [x] Manual approval SQL snippet added (scripts/sql/approve_pairing.sql).
 **Blocked**
 - 
 **Next**
-- 
+- Carry-over: pairings pipeline (draft → approved) and Today joins (pairings + verses).
+- Carry-over: verify Save/Unsave still works after Today join changes.
 
 **Day 3 DEV — Gate (must pass)**
 - [ ] Able to set a pairing for a date+locale and see it in Today (approved-only)
 - [ ] Today join returns verse + reference + rationale without nulls (or clean fallback)
-- [ ] Delivery dedupe confirmed (no duplicate invite runs for same day)
+- [x] Delivery dedupe confirmed (no duplicate invite runs for same day)
 
 ---
 
