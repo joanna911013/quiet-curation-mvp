@@ -705,12 +705,14 @@ Rationale Examples (10)
 
 ## MKT Lane
 **Plan**
-- [ ] Quiet invite subject line set (3–5 options; calm)
-- [ ] Confirm attribution display strings in Today/Detail align with spec
-- [ ] Confirm fallback label copy (if shown)
+- [x] Quiet invite subject line set (3–5 options; calm)
+- [x] Confirm attribution display strings in Today/Detail align with spec
+- [x] Confirm fallback label copy (if shown)
 
 **Done**
-- 
+- Quiet invite subject lines (EN/KR) + pairing snippet rules finalized in `docs/ops/source_formatting_approval_gate.md`.
+- Source formatting approval gate locked (literature citation + verse reference line display strings).
+- Fallback label copy confirmed: "Alternate pairing" (safe set only).
 **Blocked**
 - 
 **Next**
