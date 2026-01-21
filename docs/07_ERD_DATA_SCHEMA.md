@@ -1,8 +1,9 @@
-# ERD + Data Schema (MVP v1)
+# ERD + Data Schema
 
-Status: inferred from current docs and UI flows; no local SQL/migrations found.
+Status: synced to `quiet-curation-dev` via Supabase (2026-01-20).
 
 Sources:
+- Supabase `quiet-curation-dev` schema (public/auth/storage)
 - docs/agents/PROJECT_CONTEXT.md
 - docs/ops/content_constraints.md
 - docs/ops/emotion_taxonomy.md
@@ -11,10 +12,10 @@ Sources:
 
 ---
 
-## Entities (Core)
+## Entities (Current in quiet-curation-dev)
 
-### profiles (auth.users extension)
-Minimal profile data that mirrors auth.users.
+### profiles (public.profiles)
+Minimal profile row per auth user.
 
 | column | type | constraints | notes |
 | --- | --- | --- | --- |
@@ -22,219 +23,157 @@ Minimal profile data that mirrors auth.users.
 | created_at | timestamptz | not null, default now() | |
 | role | text | not null, default 'user' | |
 
-### items (curation unit, locale-specific)
-Single curated pair (literature + scripture) for a locale.
-
-| column | type | constraints | notes |
-| --- | --- | --- | --- |
-| id | uuid | pk | |
-| owner_id | uuid | fk -> profiles.id | required |
-| locale | text | not null | "en" or "ko" |
-| date_key | date | nullable | YYYY-MM-DD (optional) |
-| theme | text | nullable | optional card title / theme |
-| title | text | nullable | optional explicit title |
-| preview | text | nullable | optional preview for list cards |
-| literature_text | text | not null | 2-3 sentences max |
-| literature_author | text | not null | |
-| literature_work | text | nullable | |
-| scripture_reference | text | not null | e.g., "Psalm 30:5" |
-| scripture_text | text | not null | exact verse |
-| scripture_translation | text | nullable | e.g., "KJV", "WEB", "KRV" |
-| emotion_suggestions | text[] | nullable | emotion keys |
-| source_url_lit | text | nullable | |
-| source_url_bible | text | nullable | |
-| visibility | text | default "private" | "private" or "public" |
-| curation_meta | jsonb | nullable | optional LLM output / QA flags |
-| created_at | timestamptz | default now() | |
-| updated_at | timestamptz | default now() | |
-
-### collections
-User-owned groupings of items (optional in MVP but listed as core object).
-
-| column | type | constraints | notes |
-| --- | --- | --- | --- |
-| id | uuid | pk | |
-| owner_id | uuid | fk -> profiles.id | required |
-| title | text | not null | |
-| description | text | nullable | |
-| visibility | text | default "private" | "private" or "public" |
-| created_at | timestamptz | default now() | |
-| updated_at | timestamptz | default now() | |
-
-### collection_items
-Mapping table for collections with explicit ordering.
-
-| column | type | constraints | notes |
-| --- | --- | --- | --- |
-| id | uuid | pk | |
-| collection_id | uuid | fk -> collections.id | required |
-| item_id | uuid | fk -> items.id | required |
-| position | int | nullable | order within collection |
-| created_at | timestamptz | default now() | |
-
 Constraints:
-- unique (collection_id, item_id)
+- PK on `id`
+- FK `id` -> `auth.users(id)` on delete cascade
 
----
-
-## Entities (Supporting / Inferred from UI)
-
-### saved_items (if not modeled as a default collection)
-Per-user saved/bookmark state.
+### verses (public.verses)
+Canonical verse text with optional embedding.
 
 | column | type | constraints | notes |
 | --- | --- | --- | --- |
-| user_id | uuid | pk, fk -> profiles.id | |
-| item_id | uuid | pk, fk -> items.id | |
-| created_at | timestamptz | default now() | |
-
-### emotion_events (current table)
-Stores emotion selection (and optional memo) after reading.
-
-| column | type | constraints | notes |
-| --- | --- | --- | --- |
-| id | uuid | pk | |
-| user_id | uuid | fk -> profiles.id | required |
-| pairing_id | uuid | fk -> pairings.id | required |
-| emotion_primary | text | not null | primary emotion key |
-| emotion_secondary | text[] | nullable | secondary emotion keys |
-| memo_short | text | nullable | |
-| memo_long | text | nullable | |
-| created_at | timestamptz | not null, default now() | |
-| updated_at | timestamptz | not null, default now() | |
-| event_date | date | nullable | |
-| curation_id | uuid | fk -> items.id | nullable |
-
----
-
-## Relationships (High Level)
-- profiles.id -> auth.users.id
-- items.owner_id -> profiles.id
-- collections.owner_id -> profiles.id
-- collection_items.collection_id -> collections.id
-- collection_items.item_id -> items.id
-- saved_items.user_id -> profiles.id
-- saved_items.item_id -> items.id
-- emotion_events.user_id -> profiles.id
-- emotion_events.pairing_id -> pairings.id
-- emotion_events.curation_id -> items.id
-
----
-
-## Value Sets
-- locale: "en", "ko"
-- visibility: "private", "public"
-- emotion_key:
-  - peace
-  - anxiety
-  - weariness
-  - loneliness
-  - hope
-  - gratitude
-  - grief
-  - confusion
-  - joy
-
----
-
-## RLS Notes (from PROJECT_CONTEXT)
-- Enable RLS on all user tables.
-- Owner can CRUD their own rows.
-- Public can read only rows with visibility = "public".
-- Mapping tables must not bypass privacy via joins.
-- RLS Summary (Week 2): pairings = authenticated SELECT where status='approved'; emotion_events = authenticated CRUD where user_id=auth.uid(); verses & verse_embeddings = authenticated SELECT (no public access).
-
----
-
-## Open Questions / TBD
-- Is "Saved" represented as a default collection or a dedicated saved_items table?
-- Are title/preview stored or derived at read time?
-- Do we persist LLM quality_checks and matching_rationale, or keep them in curation_meta only?
-- Do items exist per-user (owner_id) or can there be global items curated by an admin account?
-
----
-
-## Week 2 Patch (2026-01-19)
-Adds Week 2 data tables for Today pairing and emotion check-ins. Use emotion_events for check-ins going forward.
-
-### verses
-Canonical verse records per locale/translation.
-
-| column | type | constraints | notes |
-| --- | --- | --- | --- |
-| id | uuid | pk | |
+| id | uuid | pk, default gen_random_uuid() | |
 | translation | text | not null | e.g., "KJV", "WEB", "KRV" |
 | book | text | not null | |
-| chapter | int | not null | |
-| verse | int | not null | |
+| chapter | int | not null, check chapter > 0 | |
+| verse | int | not null, check verse > 0 | |
 | text | text | not null | verse body |
-| embedding | vector | nullable | |
+| embedding | vector | nullable | inline embedding column |
 | created_at | timestamptz | not null, default now() | |
 | locale | text | not null, default 'en' | "en" or "ko" |
 | canonical_ref | text | nullable | e.g., "Psalm 30:5" |
 | verse_text | text | nullable | |
 
-### verse_embeddings
-Vector embeddings for verses (pgvector).
+Constraints:
+- PK on `id`
+- UNIQUE (`translation`, `book`, `chapter`, `verse`)
+- CHECK `chapter > 0`, CHECK `verse > 0`
+
+### verse_embeddings (public.verse_embeddings)
+Dedicated embedding records for verses.
 
 | column | type | constraints | notes |
 | --- | --- | --- | --- |
-| id | uuid | pk | |
+| id | uuid | pk, default gen_random_uuid() | |
 | verse_id | uuid | fk -> verses.id | required |
 | embedding | vector | nullable | pgvector |
 | model | text | not null, default 'text-embedding-3-small' | |
 | dims | int | not null, default 1536 | |
 | created_at | timestamptz | not null, default now() | |
 
-Indexes:
-- verse_embeddings_embedding_idx on verse_embeddings using ivfflat (embedding vector_cosine_ops)
+Constraints:
+- PK on `id`
+- FK `verse_id` -> `verses(id)` on delete cascade
 
-### pairings (daily snapshot)
-Daily pairing per locale.
+### pairings (public.pairings)
+Daily pairing for a locale.
 
 | column | type | constraints | notes |
 | --- | --- | --- | --- |
-| id | uuid | pk | |
+| id | uuid | pk, default gen_random_uuid() | |
 | pairing_date | date | not null | |
-| locale | text | not null | "en" or "ko" |
+| locale | text | not null, check locale in ('ko','en') | |
 | verse_id | uuid | fk -> verses.id | required |
 | literature_text | text | not null | |
 | literature_source | text | nullable | |
 | literature_author | text | nullable | |
 | literature_work | text | nullable | |
-| quality_score | real | not null, default 0 | |
+| quality_score | real | not null, default 0, check 0<=quality_score<=1 | |
 | model_version | text | nullable | |
 | created_at | timestamptz | not null, default now() | |
-| status | text | not null, default 'draft' | "draft" or "approved" |
-| curation_id | uuid | fk -> items.id | nullable |
+| status | text | not null, default 'draft', check status in ('draft','approved') | |
+| curation_id | uuid | nullable | reserved; not enforced to items | |
 | rationale_short | text | not null, default '' | short rationale |
 | literature_title | text | nullable | |
 | literature_url | text | nullable | |
 
 Constraints:
-- unique (pairing_date, locale)
-- status in ("draft", "approved")
+- PK on `id`
+- UNIQUE (`pairing_date`, `locale`)
+- FK `verse_id` -> `verses(id)` (delete restrict)
+- CHECK locale in ('ko','en')
+- CHECK 0 <= quality_score <= 1
+- CHECK status in ('draft','approved')
 
-Indexes:
-- pairings_pairing_date_idx on pairings(pairing_date)
-- pairings_locale_idx on pairings(locale)
-
-### emotion_events
-User emotion check-in (one per day for MVP).
+### emotion_events (public.emotion_events)
+User emotion check-in per pairing/day.
 
 | column | type | constraints | notes |
 | --- | --- | --- | --- |
-| id | uuid | pk | |
-| user_id | uuid | fk -> profiles.id | required |
+| id | uuid | pk, default gen_random_uuid() | |
+| user_id | uuid | fk -> auth.users.id | required |
 | pairing_id | uuid | fk -> pairings.id | required |
-| emotion_primary | text | not null | |
-| emotion_secondary | text[] | nullable | |
+| emotion_primary | text | not null | emotion key |
+| emotion_secondary | text[] | nullable | secondary keys |
 | memo_short | text | nullable | |
 | memo_long | text | nullable | |
 | created_at | timestamptz | not null, default now() | |
 | updated_at | timestamptz | not null, default now() | |
 | event_date | date | nullable | |
-| curation_id | uuid | fk -> items.id | nullable |
+| curation_id | uuid | nullable | reserved; not enforced to items |
 
 Constraints:
-- unique (user_id, event_date)
+- PK on `id`
+- UNIQUE (`user_id`, `pairing_id`)
+- FK `user_id` -> `auth.users(id)` on delete cascade
+- FK `pairing_id` -> `pairings(id)` (mix of CASCADE/SET NULL upstream)
+
+### saved_items (public.saved_items)
+Per-user bookmark of pairings.
+
+| column | type | constraints | notes |
+| --- | --- | --- | --- |
+| user_id | uuid | pk, fk -> auth.users.id | |
+| pairing_id | uuid | pk, fk -> pairings.id | |
+| created_at | timestamptz | not null, default now() | |
+
+Constraints:
+- PK on (`user_id`, `pairing_id`)
+- FK `user_id` -> `auth.users(id)` on delete cascade
+- FK `pairing_id` -> `pairings(id)` on delete cascade
+
+---
+
+## Relationships (High Level)
+- profiles.id -> auth.users.id
+- pairings.verse_id -> verses.id
+- verse_embeddings.verse_id -> verses.id
+- emotion_events.user_id -> auth.users.id
+- emotion_events.pairing_id -> pairings.id
+- saved_items.user_id -> auth.users.id
+- saved_items.pairing_id -> pairings.id
+
+---
+
+## Value Sets
+- locale: "en", "ko"
+- emotion_key (app taxonomy): peace, anxiety, weariness, loneliness, hope, gratitude, grief, confusion, joy
+
+---
+
+## RLS Notes (current)
+- RLS enabled on all listed public tables; anything not covered by a policy is denied.
+- profiles (roles: public -> anon+auth):
+  - SELECT `id = auth.uid()`
+  - UPDATE `id = auth.uid()`
+- pairings (roles: authenticated):
+  - SELECT `status = 'approved'`
+- emotion_events (roles: authenticated):
+  - SELECT `user_id = auth.uid()`
+  - INSERT with_check `user_id = auth.uid()`
+  - UPDATE where `user_id = auth.uid()` with_check `user_id = auth.uid()`
+  - DELETE where `user_id = auth.uid()`
+- saved_items (roles: public -> anon+auth):
+  - SELECT `auth.uid() = user_id`
+  - INSERT with_check `auth.uid() = user_id`
+  - DELETE where `auth.uid() = user_id`
+- verses (roles: authenticated):
+  - SELECT all rows (no row filter)
+- verse_embeddings (roles: authenticated):
+  - SELECT all rows (no row filter)
+
+---
+
+## Gaps vs earlier design
+- Tables not present in quiet-curation-dev: `items`, `collections`, `collection_items`, dedicated `saved_items` for items (current saved_items bookmarks pairings instead).
+- `curation_id` fields exist on pairings/emotion_events but no referenced `items` table yet.

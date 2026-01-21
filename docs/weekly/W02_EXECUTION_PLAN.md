@@ -1,7 +1,7 @@
 # Week 2 Execution Plan — Data & RAG MVP (Single Source of Execution Truth)
 
 **Scope (Week 2):**
-1) DB schema + verses embeddings  
+1) DB schema + verses ingestion + keyword search (Option C; embeddings deferred)  
 2) Pairings show in Today view  
 3) Emotion logs save  
 4) Daily delivery (“quiet invite”) remains stable and deduped
@@ -41,7 +41,7 @@
 ## Week 2 North Star Outcomes
 1) Login → Today → Detail → Save → Saved works without friction  
 2) Today renders pairing snapshot reliably (or fallback)  
-3) Verse embeddings pipeline works and is re-runnable  
+3) Verse search works (Option C keyword search; embeddings deferred)  
 4) Emotion logs save with correct RLS  
 5) Daily ops (approve curation + pairing) can be done in ≤15 minutes
 
@@ -54,7 +54,7 @@
 - Emotion logging: primary emotion required, memo optional, “logged today” state
 
 ### Data & RAG
-- `verses` populated + embeddings stored + vector search works
+- `verses` populated + keyword search works (Option C; embeddings deferred)
 - `pairings` stored as daily snapshot with unique `(pairing_date, locale)`
 - `emotion_events` stored per user with RLS
 
@@ -349,12 +349,12 @@ Behavior:
 - [x] Ensure each agent updated only their lane in this file
 - [x] Set Day 2 numeric targets:
   - Min verses ingested: 300
-  - Min verses embedded: 295
-  - Similarity search top_k: 5
+  - Text search top_k: 5
+  - Embeddings: deferred (Option C; no paid embeddings Day2)
 
 ### MASTER — Done
 - Baseline decisions verified in `W02_DECISIONS_LOG.md`
-- Day 2 numeric targets set (ingested 300, embedded 295, top_k 5)
+- Day 2 numeric targets set (ingested 300, text search top_k 5; embeddings deferred)
 ### MASTER — Blocked
 - None.
 ### MASTER — Next
@@ -369,7 +369,7 @@ Behavior:
 ### Blocked
 - None.
 ### Carry-over (explicit)
-- Day 2 DEV: ingest verses, run embeddings, validate search
+- Day 2 DEV: ingest verses, run keyword search (Option C), validate search
 - OPS: draft pairing approval checklist (copy/paste runnable)
 - MKT: confirm approval-required fields (literature author/title; verse translation + canonical_ref)
 
@@ -379,36 +379,102 @@ Behavior:
 
 ---
 
-# Day 2 — Verse Ingestion + Embeddings + Save Loop Stability
+# Day 2 — Verse Ingestion + Keyword Search + Save Loop Stability (Option C)
 ## DEV Lane
 **Plan**
-- [ ] Build ingestion (idempotent) for verses
-- [ ] Build embeddings batch + store model/dims
-- [ ] Add vector search function (top_k + min_similarity)
-- [ ] Ensure Save/Saved screens + RLS tests are stable
-
+- [ ] Verses ingestion (idempotent)
+  - [ ] Ingest Day2 subset (~300) with OPS normalization rules
+  - [ ] Ensure fields present: `locale`, `translation`, `book`, `chapter`, `verse`, `canonical_ref`, `verse_text`
+  - [x] Dedupe rule: prevent duplicates for same `(translation, locale, book, chapter, verse)`
+  - [x] Sample ingest run (3 rows) to verify pipeline
+- [x] Embeddings generation deferred (Option C)
+  - [x] Embedding script exits cleanly without OPENAI_API_KEY (no writes)
+  - [x] Embedding writes require `--mode openai` (skip by default)
+- [x] Keyword search contract (FTS)
+  - [x] Define RPC `search_verses(query_text, locale, translation, top_k)`
+  - [x] Create FTS GIN index on `verses.verse_text` (with fallback to legacy `text`)
+  - [x] Add `/search-check` server page for sanity queries
+- [x] Search sanity tests (Option C)
+  - [x] Run `/search-check` (shepherd/rest/anxiety) and record results
+- [x] Product loop: Save/Unsave on Detail (must be stable today)
+  - [x] Save button toggle states
+  - [x] Idempotent upsert with unique `(user_id, pairing_id)`
+  - [x] Optimistic UI + rollback on failure
+  - [x] Persist server timestamp via `created_at`
+  - [x] Saved screen renders user’s saved list (RLS-safe)
 **Done**
-- 
+- [x] Save/Unsave loop stable with server actions + optimistic UI; Saved list renders per user.
+- [x] Profile screen shows email and supports logout.
+- [x] Keyword search RPC + `/search-check` added; shepherd + anxiety queries return anchors; rest empty.
+- [x] Embedding script set to skip by default for Option C.
 **Blocked**
-- 
+- Full 300-row verse ingest pending (sample ingest only).
 **Next**
-- 
+- Run full Day2 verse ingest when dataset is ready.
+- Confirm `rest` query returns Matthew 11:28 once verse text is present.
+**Day 2 DEV — Gate (must pass)**
+- [ ] `verses` count (NIV/en) ≥ 300 (or ≥ minimum agreed for today)
+- [x] Keyword search RPC works for locale/translation filters
+- [ ] Search sanity queries pass for shepherd/rest/anxiety (rest pending)
+- [x] Save/Unsave loop works end-to-end for one user without duplicates
 
 ## DESIGN Lane
 **Plan**
-- [ ] Truncation rules for verse text (Today vs Detail)
-- [ ] Readability polish notes for verse block
+- [x] Lock verse display spec (Today vs Detail) and publish to docs (`docs/design/verse_display_spec.md`)
+- [ ] Confirm truncation rules are implemented (Today clamp vs Detail full)
+- [ ] Confirm fallback label rendering is calm + non-alarming (if shown)
+- [ ] Confirm Save button states in Detail (saved / not saved / disabled while saving)
 
 **Done**
-- 
+- Locked Verse Display Spec (Today vs Detail) for Today (/) and Detail (/c/[id]) screens.
+  - Global rules:
+    - Verse text must be DB-sourced only (no generation).
+    - Reference line format: "{Book} {Chapter}:{Verse} ({Translation})"; single line with ellipsis if overflow.
+    - Reference line always shown; verse block uses same container on Today and Detail.
+  - Today (preview):
+    - Show reference line + verse text preview; rationale not shown.
+    - Truncation: line clamp 2 lines; fallback max 140 chars (trim to word boundary) + "...".
+    - Ellipsis only at end; if text fits, show full preview.
+    - Entire verse block is tap target to open Detail.
+  - Detail:
+    - Reference line always visible, single line.
+    - Verse text shows full text, no truncation; preserve line breaks (pre-line or paragraphs).
+    - Rationale shown below verse text; target 1-2 sentences; clamp to 3 lines with ellipsis if longer (no expand in v1).
+    - If verse missing: "Verse unavailable right now." + "Pull to refresh or try again."
+    - If rationale missing: hide rationale section entirely.
+  - Typography + spacing (mobile-first):
+    - Reference line: 12px, weight 600, line-height 1.4, color #6b6b6b.
+    - Verse text: 17px, weight 400-500, line-height 1.6, color #111111; paragraph spacing 8px.
+    - Rationale: 14px, weight 400, line-height 1.5, color #5c5c5c; not italic.
+    - Spacing: reference->verse 8px; verse->rationale 12px; block padding 16px; block margin-bottom 16px.
+  - Labels (if present):
+    - Fallback label text: "Alternate pairing"; show only when fallback pairing is used.
+    - Approved-only label text: "Approved" (admin/debug only; do not show to end users).
+    - Placement: above reference line, left-aligned inside verse block; style 10px uppercase, letter-spacing 0.12em, color #9a9a9a.
+  - States:
+    - Loading Today: skeleton with reference line + 2 verse lines.
+    - Loading Detail: skeleton with reference line + 3 verse lines + 2 rationale lines.
+    - Empty (no pairing after fallback): "No pairing yet. Check back later." + Retry.
+    - Error: "Unable to load verse. Check connection and retry." + Retry.
+    - Unapproved pairing: treat as empty unless fallback data exists.
+  - NOTE: This locked spec supersedes Day 1 draft numbers in this doc.
+  - DEV implementation checklist (see `docs/design/verse_display_spec.md`):
+    - Apply Today truncation rules (2-line clamp + 140-char fallback + ellipsis) and hide rationale.
+    - Detail shows full verse text; rationale clamps to 3 lines; hide rationale if missing.
+    - Add label row handling (fallback + approved-only) per spec.
+    - Apply typography + spacing tokens and state copy per spec.
 **Blocked**
 - 
 **Next**
-- 
+- Carry-over: confirm truncation rules are implemented (Today clamp vs Detail full).
+- Carry-over: confirm fallback label rendering is calm + non-alarming (if shown).
+- Carry-over: confirm Save button states in Detail (saved / not saved / disabled while saving).
 
 ## OPS Lane
 **Plan**
 - [ ] (Carry-over) Draft pairing approval checklist (copy/paste runnable)
+- [ ] After DEV ingestion: verify DB rows match source spec (spot-check 10)
+- [ ] Run search acceptance checks after keyword search is enabled
 - [x] Load initial verses dataset (spec + scope ready for DEV ingestion)
 - [x] Spot-check references/text correctness (sample)
 - [x] Create "anchor verse" list for sanity tests
@@ -417,11 +483,11 @@ Behavior:
 - Locked Day 2 subset scope (locale/translation + books/chapters below).
 - Drafted ingestion-ready dataset spec with normalization rules.
 - Spot-checked 10 verses (NIV text/ref/label OK; no encoding issues in sample).
-- Built 10 anchor verses and embedding/search acceptance criteria.
+- Built 10 anchor verses and search acceptance criteria (Option C).
 **Blocked**
 - None.
 **Next**
-- DEV: ingest verses and run embeddings per spec.
+- DEV: ingest verses and run keyword search per spec.
 - OPS: re-validate spot-check against DB rows after ingestion.
 
 ### Day 2 OPS - Subset Scope (Frozen)
@@ -467,14 +533,11 @@ Dataset source + license:
 - 1 Corinthians 13:4 (NIV) - "Love is patient, love is kind. It does not envy," - keywords: love, kind
 - Philippians 4:6 (NIV) - "Do not be anxious about anything, but in every situation," - keywords: prayer, anxiety
 
-### Day 2 OPS - Embedding/Search Acceptance Criteria (OPS Gate)
+### Day 2 OPS - Text Search Acceptance Criteria (Option C)
 - Min verses ingested: 300 (scope above).
-- Min verses embedded: 295 (>= ingested - 5).
-- Embedding metadata stored: model name + dims for each embedded row.
-- Search sanity (top_k = 5):
+- Embeddings deferred (Option C; no paid embeddings in Day 2).
+- Search sanity (top_k = 5, keyword/FTS):
   - Query "shepherd" returns Psalms 23:1 (NIV) in top_k.
-  - Query "love" returns 1 Corinthians 13:4 (NIV) or John 3:16 (NIV) in top_k.
-  - Query "comfort" returns Psalms 23:1 (NIV) in top_k.
   - Query "rest" returns Matthew 11:28 (NIV) in top_k.
   - Query "anxiety" returns Philippians 4:6 (NIV) in top_k.
 
@@ -482,92 +545,104 @@ Dataset source + license:
 - `canonical_ref` is stored without translation (e.g., "Psalms 23:1"); UI displays as `"Psalms 23:1 (NIV)"`.
 - NIV text must come from the licensed dataset used for ingestion; keep a clear source/version note for reproducibility.
 
+**Day 2 OPS — Gate (must pass)**
+- [ ] Ingested verses ≥ 300 (scope frozen)
+- [ ] Text search checks pass (shepherd/rest/anxiety, top_k=5)
+- [ ] Approval checklist is runnable and objective (no vague wording)
+
 ## MKT Lane
 **Plan**
-- [ ] (Carry-over) Confirm approval-required fields (literature author/title; verse translation + canonical_ref)
-- [ ] Provide 5–10 sample pairing rationales (tone reference)
-- [ ] Confirm email pairing snippet rule (max 1 verse line + 1 rationale line)
+- [ ] (Carry-over) Confirm approval-required fields (enforceable)
+  - [ ] Literature: at least one of `literature_author` or `literature_title` (URL optional)
+  - [ ] Verse: UI reference requires `canonical_ref` + `(NIV)` translation label
+- [x] Provide 5–10 sample rationales (tone reference only; 1–2 calm sentences)
+- [ ] Confirm “quiet invite” snippet constraints (delivery-safe)
+  - [ ] Max: 1 verse ref line + 1 rationale line (no long excerpts in delivery)
 
-### Day 2 MKT — Approval Gate Specs (Final)
-Source Formatting Spec (approval gate)
-- Literature citation line (exact format): `— {Author}, *{Title}*{, Year}`
-- Rules:
-  - Prefix with em dash + single space: `— `
-  - Title must be wrapped in markdown italics: `*Title*`
-  - If Year is missing: omit `, Year` cleanly (no trailing comma)
-  - If Author is missing: default to `Unknown author`
-  - If Title is missing: default to `Untitled`
-  - Trim extra whitespace; no double spaces
-- Examples:
-  - `— Virginia Woolf, *To the Lighthouse*, 1927`
-  - `— James Baldwin, *The Fire Next Time*`
-  - `— Unknown author, *A Quiet Room*, 1901`
+### Day 2 MKT — Excerpt Limit + Rationale Examples (Final)
+Excerpt Limit (Final)
+- Primary rule: `excerpt_word_count <= 70`
+- Word count method: trim leading/trailing whitespace, then count whitespace-separated tokens
+- Over-limit behavior (approval rule): reject for approval until trimmed to <= 70 words
+- Secondary guardrail (optional): `sentence_count <= 3` where sentence_count = count of sentence-ending punctuation marks (. ! ?)
 
-Verse reference line (approval gate)
-- Required format: `{Book} {Chapter}:{Verse} ({Translation})`
-- Rules:
-  - Book names in Title Case with standard full names
-  - Numerals with a space (e.g., "1 Corinthians")
-  - No extra punctuation beyond the colon in Chapter:Verse
-- Examples:
-  - `Psalms 23:1 (NIV)`
-  - `John 3:16 (NIV)`
-  - `1 Corinthians 13:4 (NIV)`
-
-Disclaimer Rule (conditional only)
-- Trigger when `license_status = "unknown"` OR `excerpt_word_count > 90`
-- Word-count method: `word_count = number of whitespace-separated tokens after trimming`
-- Disclaimer copy (exact): `Attribution only. If you are the rights holder and want this removed, contact us.`
-- Placement: show only when triggered, at the bottom of the literature excerpt block (not global)
-- Examples:
-  - Example A (license unknown; disclaimer shown):
-    - Input: `license_status="unknown"`, `excerpt_word_count=42`
-    - Output (literature block):
-      - `A short, verified excerpt.`
-      - `— Jane Austen, *Pride and Prejudice*, 1813`
-      - `Attribution only. If you are the rights holder and want this removed, contact us.`
-  - Example B (excerpt > 90 words; disclaimer shown):
-    - Input: `license_status="licensed"`, `excerpt_word_count=112`
-    - Output (literature block):
-      - `A long excerpt exceeding the 90-word limit.`
-      - `— Ralph Waldo Emerson, *Self-Reliance*, 1841`
-      - `Attribution only. If you are the rights holder and want this removed, contact us.`
-
-Microcopy keys (EN; defaults + up to 2 alternates)
-- Default: “Today’s Pairing”
-  - Alternates: “Today’s Pair”, “Today’s pairing”
-- Default: “Why this pairing?”
-  - Alternates: “Why this pair?”, “Why this match?”
-- Default: “How are you feeling right now?”
-  - Alternates: “How do you feel today?”, “How are you feeling today?”
+Rationale Examples (10)
+1. A quiet reminder that rest can be found even when the day is unfinished. Let the weight ease for a moment.
+2. When worries feel loud, this offers a small place to breathe. You do not need to solve everything right now.
+3. In the middle of fatigue, this points to steady support rather than quick fixes. One small step is enough.
+4. Even thin hope can be held gently; this keeps it simple and close. It suggests a path forward without rushing.
+5. Gratitude can be small and still real; this invites a quiet notice of what remains. Let that be enough today.
+6. For grief, this holds space without explaining it away. It honors the ache and the slow work of comfort.
+7. If things feel unclear, this stays with the uncertainty rather than forcing answers. A calm pause is still progress.
+8. Joy here is soft and grounded, not loud. It makes room to notice what is already good.
+9. When you feel alone, this keeps company without asking for more. A gentle steadiness can be enough.
+10. In moments of fear, this leans toward light and steadiness. It invites a quiet return to what is firm.
 
 **Done**
-- 
+- Excerpt length limit finalized (70-word cap + sentence guardrail)
+- Rationale tone examples drafted (10)
 **Blocked**
-- 
+- None.
 **Next**
-- 
-
-## MASTER Lane
-**Plan**
-- [ ] Set stop conditions (min embedded verses; “good enough” search bar)
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
+- (Carry-over) Confirm approval-required fields (enforceable)
+- Confirm “quiet invite” snippet constraints (delivery-safe)
 
 ---
 
-# Day 3 — Pairings Pipeline + Quiet Invite Includes Pairing When Available
+## MASTER Lane
+**Plan**
+- [x] Set stop conditions (what “good enough” means today)
+  - [ ] Verses ≥ 300, keyword search queries pass (shepherd/rest/anxiety)
+  - [x] Save loop stable end-to-end once
+- [x] Run Day 2 evening gate and record carry-overs
+
+**Done**
+- Save/Unsave loop stable end-to-end for one user (no duplicates).
+- Keyword search RPC + `/search-check` live; shepherd + anxiety anchors found.
+- Verse display spec locked; Day 2 dataset spec + anchor verses ready.
+**Blocked**
+- Full verse ingest (>= 300) pending; `rest` sanity blocked until Matthew 11:28 ingested.
+**Next**
+- Run full verse ingest and re-run `rest` sanity; update DEV/OPS gates.
+- Confirm Today/Detail truncation + fallback label + Save button states in UI.
+- Finalize approval checklist + quiet invite snippet constraints.
+
+---
+
+## Today — EVENING GATE (MASTER)
+### Done
+- DEV: Save/Unsave loop stable; keyword search RPC + `/search-check`; embedding script skip default.
+- DESIGN: Verse display spec locked in `docs/design/verse_display_spec.md`.
+- OPS: Day 2 subset scope + dataset spec locked; anchor verses + spot-checks done.
+- MKT: Excerpt limit finalized; rationale examples drafted.
+### Blocked
+- Full verse ingest (>= 300) pending; `rest` search sanity blocked until Matthew 11:28 ingested.
+### Carry-over (explicit)
+- DEV: run full verse ingest; re-run search sanity (`rest`) and update gates.
+- DESIGN: confirm truncation implementation, fallback label rendering, Save button states.
+- OPS: draft approval checklist; verify DB rows post-ingest; run search acceptance checks.
+- MKT: confirm approval-required fields; confirm quiet invite snippet constraints.
+### Decisions Recorded?
+- [X] Yes (added to `W02_DECISIONS_LOG.md`)
+- [] No
+
+---
+
+# Day 3 — Pairings Pipeline + Today Joins + Quiet Invite Uses Pairing When Available
+
 ## DEV Lane
 **Plan**
-- [ ] Store pairing snapshots as draft→approved with unique(date, locale)
-- [ ] Today query joins curation + pairing + verse
-- [ ] Email template optionally includes pairing snippet (if present)
-- [ ] Dedupe deliveries (1/day/user)
+- [ ] Pairings pipeline (draft → approved)
+  - [ ] Enforce unique `(pairing_date, locale)` behavior (update vs insert policy)
+  - [ ] Ensure non-admin reads are approved-only
+- [ ] Today query joins reliably
+  - [ ] `pairings` + `verses` join must always return: `verse_text`, `canonical_ref`, `translation`
+  - [ ] Define join-failure behavior (fallback reason)
+- [ ] Delivery dedupe (stability)
+  - [ ] Ensure “quiet invite” is deduped to 1/day/user (no double send)
+  - [ ] Deep link routes remain valid (Today or Detail)
+- [ ] Minimal Saved stability check (regression)
+  - [ ] Save/Unsave still works after Today join changes
 
 **Done**
 - 
@@ -575,47 +650,18 @@ Microcopy keys (EN; defaults + up to 2 alternates)
 - 
 **Next**
 - 
+
+**Day 3 DEV — Gate (must pass)**
+- [ ] Able to set a pairing for a date+locale and see it in Today (approved-only)
+- [ ] Today join returns verse + reference + rationale without nulls (or clean fallback)
+- [ ] Delivery dedupe confirmed (no duplicate invite runs for same day)
+
+---
 
 ## DESIGN Lane
 **Plan**
-- [ ] Pairing block final UI spec (verse + rationale + attribution)
-- [ ] Fallback label micro-rule (quiet, not alarming)
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
-## OPS Lane
-**Plan**
-- [ ] Create + approve initial pairings inventory
-- [ ] Build Safe Pairing Set (target 20)
-- [ ] Operator rehearsal: approve today + verify Today renders + verify email
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
-## MKT Lane
-**Plan**
-- [ ] Quiet invite subject line set (3–5)
-- [ ] Confirm attribution display strings
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
-## MASTER Lane
-**Plan**
-- [ ] Run end-to-end rehearsal once and record gaps
+- [ ] Pairing block final spec validation (verse + rationale + attribution placement)
+- [ ] Fallback label micro-rule (quiet, not alarming) — confirm implemented text
 
 **Done**
 - 
@@ -626,14 +672,80 @@ Microcopy keys (EN; defaults + up to 2 alternates)
 
 ---
 
-# Day 4 — Admin Ops Mode (Curation + Pairing Approval) + No Blank Day
+## OPS Lane
+**Plan**
+- [ ] Create initial pairings inventory (draft)
+- [ ] Approve at least 1 pairing for “today” (date+locale)
+- [ ] Start Safe Pairing Set seed (target 20 over Week 2; start here)
+- [ ] Operator rehearsal (single run)
+  - [ ] Approve pairing → verify Today → verify fallback toggle (by removing today)
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
+## MKT Lane
+**Plan**
+- [ ] Quiet invite subject line set (3–5 options; calm)
+- [ ] Confirm attribution display strings in Today/Detail align with spec
+- [ ] Confirm fallback label copy (if shown)
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
+## MASTER Lane
+**Plan**
+- [ ] Run one end-to-end rehearsal and record gaps
+  - [ ] Login → Today (approved pairing shows) → Detail → Save → Saved
+  - [ ] Remove today pairing → fallback appears (no blank day)
+- [ ] Update decision log if any behavioral contract changes
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
+## Today — EVENING GATE (MASTER)
+### Done
+- 
+### Blocked
+- 
+### Carry-over (explicit)
+- 
+### Decisions Recorded?
+- [ ] Yes (added to `W02_DECISIONS_LOG.md`)
+- [ ] No
+
+---
+
+# Day 4 — Admin Ops Mode + Safe Pairing Set + No Blank Day Drill
+
 ## DEV Lane
 **Plan**
 - [ ] Admin access control (role-based)
-- [ ] Admin: create/edit/approve curations + set Today
-- [ ] Admin: create/edit/approve pairings for date+locale
-- [ ] Fallback: Safe Pairing Set when today missing/invalid
-- [ ] Guardrails: approved-only, join-failure -> fallback
+  - [ ] Only admin can create/edit/approve pairings
+  - [ ] Users remain read-only approved consumption
+- [ ] Admin minimal workflows
+  - [ ] Set/approve pairing for `(pairing_date, locale)`
+  - [ ] Approve flow is one-click / minimal form
+- [ ] Fallback behavior hardened
+  - [ ] If today missing/unapproved/join_failed → use Safe Pairing Set
+  - [ ] Fallback reason surfaced to UI contract (for debugging only)
 
 **Done**
 - 
@@ -641,46 +753,18 @@ Microcopy keys (EN; defaults + up to 2 alternates)
 - 
 **Next**
 - 
+
+**Day 4 DEV — Gate (must pass)**
+- [ ] Admin can set today pairing in ≤ 3 minutes
+- [ ] Users never see draft pairings
+- [ ] “No blank day” verified (forced missing-today drill)
+
+---
 
 ## DESIGN Lane
 **Plan**
-- [ ] Admin UI minimal layout (only what’s needed)
-- [ ] Mobile polish for Today/Detail pairing blocks
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
-## OPS Lane
-**Plan**
-- [ ] Expand safe set inventory to target
-- [ ] Daily routine draft: approve curation + pairing + verify Today + verify fallback
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
-## MKT Lane
-**Plan**
-- [ ] Final microcopy for pairing + fallback + emotion prompt
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
-## MASTER Lane
-**Plan**
-- [ ] Missing-today drill: remove today pairing -> fallback verified
-- [ ] Ensure daily ops can be done in ≤15 minutes
+- [ ] Admin UI minimal layout spec check (only required fields)
+- [ ] Mobile QA for Today/Detail/Saved regression
 
 **Done**
 - 
@@ -691,37 +775,11 @@ Microcopy keys (EN; defaults + up to 2 alternates)
 
 ---
 
-# Day 5 — Emotion Logs Ship + Hardening + Week2 Gate
-## DEV Lane
-**Plan**
-- [ ] Emotion logging UI + API + RLS verification
-- [ ] “Logged today” behavior (dedupe rule applied)
-- [ ] E2E QA scenarios (today pairing present/missing, email deep link, save loop)
-- [ ] Minimal observability logs (delivery, today fetch, emotion save)
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
-## DESIGN Lane
-**Plan**
-- [ ] Emotion UI: minimal + skippable + calm confirmation
-- [ ] Final mobile QA checklist
-
-**Done**
-- 
-**Blocked**
-- 
-**Next**
-- 
-
 ## OPS Lane
 **Plan**
-- [ ] Finalize daily runbook (≤15 min)
-- [ ] Spot-check 3 pairings + verify attribution compliance
+- [ ] Expand Safe Pairing Set inventory (target 20; minimum 10 by end of Day 4)
+- [ ] Daily routine draft (≤15 min)
+  - [ ] Approve pairing → verify Today → verify delivery dedupe → spot-check attribution
 
 **Done**
 - 
@@ -729,10 +787,15 @@ Microcopy keys (EN; defaults + up to 2 alternates)
 - 
 **Next**
 - 
+
+---
 
 ## MKT Lane
 **Plan**
-- [ ] Release notes bullets + updated quiet invite copy (if needed)
+- [ ] Final microcopy for:
+  - [ ] Pairing block labels
+  - [ ] Fallback label (quiet)
+  - [ ] Emotion prompt confirmation copy (calm)
 
 **Done**
 - 
@@ -741,10 +804,112 @@ Microcopy keys (EN; defaults + up to 2 alternates)
 **Next**
 - 
 
+---
+
+## MASTER Lane
+**Plan**
+- [ ] Missing-today drill: remove today pairing → fallback verified
+- [ ] Time the daily ops run and confirm ≤15 minutes
+- [ ] Record any contract changes as decisions
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
+## Today — EVENING GATE (MASTER)
+### Done
+- 
+### Blocked
+- 
+### Carry-over (explicit)
+- 
+### Decisions Recorded?
+- [ ] Yes (added to `W02_DECISIONS_LOG.md`)
+- [ ] No
+
+---
+
+# Day 5 — Emotion Logs Ship + Hardening + Week 2 Final Gate
+
+## DEV Lane
+**Plan**
+- [ ] Emotion logging end-to-end
+  - [ ] Primary emotion required, memo optional
+  - [ ] Deduped by unique `(user_id, event_date)` (or chosen unique constraint)
+  - [ ] “Logged today” UI state
+- [ ] RLS verification (must be explicit)
+  - [ ] User A cannot read/write User B emotion events
+- [ ] E2E QA scenarios (Week 2 final)
+  - [ ] Today pairing present
+  - [ ] Today pairing missing → fallback
+  - [ ] Detail → Save/Unsave → Saved list stable
+  - [ ] Delivery dedupe holds (if running)
+- [ ] Minimal observability hooks (debug-level)
+  - [ ] Log today fetch failure reasons
+  - [ ] Log emotion save failures
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
+## DESIGN Lane
+**Plan**
+- [ ] Emotion UI: minimal, skippable, calm confirmation
+- [ ] Final mobile QA checklist (Today/Detail/Saved/Profile)
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
+## OPS Lane
+**Plan**
+- [ ] Finalize daily runbook (≤15 min; copy/paste steps)
+- [ ] Spot-check 3 approved pairings for attribution compliance
+- [ ] Confirm Safe Pairing Set inventory meets minimum
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
+## MKT Lane
+**Plan**
+- [ ] Release notes bullets (internal)
+- [ ] Quiet invite copy final (if any adjustments needed)
+- [ ] Confirm disclaimer trigger rule is consistent with ops checklist
+
+**Done**
+- 
+**Blocked**
+- 
+**Next**
+- 
+
+---
+
 ## MASTER Lane — Final Gate (Must Pass)
-- [ ] Today renders approved curation + pairing (date+locale)
-- [ ] Verse text always DB-sourced; reference includes translation
-- [ ] Missing today snapshot triggers safe fallback (no blank day)
+- [ ] Today renders approved pairing snapshot (date+locale) or safe fallback (no blank day)
+- [ ] Verse text always DB-sourced; verse reference includes translation label (NIV)
+- [ ] Keyword search sanity checks pass (Option C; embeddings deferred)
+- [ ] Save/Unsave loop stable; Saved list accurate per user (RLS)
 - [ ] Emotion logs save + user isolation verified
-- [ ] Email delivery deduped + deep link works
-- [ ] Daily ops runnable in ≤15
+- [ ] Daily ops runnable in ≤15 minutes (timed)

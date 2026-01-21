@@ -58,7 +58,6 @@ Rules:
 **Impact:** Ingestion source must be a licensed NIV text; anchors, spot-checks, and search acceptance criteria must use NIV wording.
 
 ## 2026-01-19
-
 **Decision:**  Store `canonical_ref` without translation; display translation in UI as `"{canonical_ref} ({translation})"`.
 
 ## 2026-01-19
@@ -70,6 +69,11 @@ Rules:
 **Decision:** Literature excerpt length limit set to 70 words (hard cap).  
 **Why:** Keep MVP snippets short and consistent with the calm, minimal reading time goal.  
 **Impact:** OPS must enforce <=70 words in literature excerpts; items above the limit require trimming before approval.
+
+## 2026-01-20
+**Decision:** If the user’s locale has no approved pairings, Home falls back to the latest approved pairings across any locale.  
+**Why:** Prevent empty states from blocking access to the Detail view while content is still being approved per locale.  
+**Impact:** Home performs a locale-filtered query first, then retries without the locale filter when results are empty.
 
 
 ## Template
