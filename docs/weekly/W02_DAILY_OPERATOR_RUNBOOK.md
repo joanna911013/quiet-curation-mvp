@@ -16,7 +16,7 @@ Non-negotiable:
 - docs/weekly/W02_EXECUTION_PLAN.md
 - docs/weekly/W02_DECISIONS_LOG.md
 - docs/07_ERD_DATA_SCHEMA.md
-- docs/DESIGN_TO_DEV.md
+- docs/handoff/DESIGN_TO_DEV.md
 
 **Writes**
 - code + migrations
@@ -35,7 +35,7 @@ Non-negotiable:
 **Reads**
 - docs/weekly/W02_EXECUTION_PLAN.md
 - docs/design/* (principles/components/typography/user-flow/scope)
-- docs/DESIGN_TO_DEV.md
+- docs/handoff/DESIGN_TO_DEV.md
 
 **Writes**
 - W02_EXECUTION_PLAN.md → DESIGN lane

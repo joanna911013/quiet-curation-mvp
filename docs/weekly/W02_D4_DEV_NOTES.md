@@ -16,3 +16,18 @@ Admin panel (pairings) — minimal ops UI:
 - Admin role SQL:
   - `update public.profiles set role='admin' where id='<USER_ID>';`
 - Status: complete (list, edit/new, approve, set-today verified).
+- Today + Detail render real pairing data:
+  - Today fetch uses approved-only pairing for today (Asia/Seoul) + locale, ordered by created_at desc/id desc.
+  - Today shows verse reference + 2-line verse preview + literature excerpt + citation line; fallback uses Safe Pairing Set (no blank day).
+  - Detail shows full verse text + rationale section (clamped) + sources; shows missing-verse message if translation is absent.
+
+Safe fallback (Day 3 Task E):
+- Fallback selection: if no approved pairing for today+locale, select from safe set where status='approved' and is_safe_set=true, ordered by created_at desc then id desc. UI receives isFallback flag but shows the same block.
+- Cron delivery uses safe set before failing (no blank day email).
+- Admin dashboard shows banner "Today pairing missing" when no approved pairing exists for today+locale; link to /admin/pairings filtered to today+locale.
+
+SQL snippet (pairings safe set flag):
+```sql
+alter table public.pairings
+  add column if not exists is_safe_set boolean not null default false;
+```

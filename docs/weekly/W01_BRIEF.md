@@ -51,7 +51,7 @@ Status: ✅ PASS
 
 5) Prompts library MD exists (Curator + Critic)  
 - Result: ✅ PASS  
-- Evidence: `docs/08_CRITIC_PROMPT_VALIDATION.md` exists with Critic v1.0 results.
+- Evidence: `docs/prompts/08_CRITIC_PROMPT_VALIDATION.md` exists with Critic v1.0 results.
 
 6) Next week brief drafted (W02)  
 - Result: ✅ PASS (to be published)  
