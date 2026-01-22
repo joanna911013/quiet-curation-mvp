@@ -762,18 +762,21 @@ Rationale Examples (10)
 
 ## DEV Lane
 **Plan**
-- [ ] Admin access control (role-based)
-  - [ ] Only admin can create/edit/approve pairings
-  - [ ] Users remain read-only approved consumption
-- [ ] Admin minimal workflows
-  - [ ] Set/approve pairing for `(pairing_date, locale)`
-  - [ ] Approve flow is one-click / minimal form
+- [x] Admin access control (role-based)
+  - [x] Only admin can create/edit/approve pairings
+  - [x] Users remain read-only approved consumption
+- [x] Admin minimal workflows
+  - [x] Set/approve pairing for `(pairing_date, locale)`
+  - [x] Approve flow is one-click / minimal form
 - [ ] Fallback behavior hardened
   - [ ] If today missing/unapproved/join_failed → use Safe Pairing Set
   - [ ] Fallback reason surfaced to UI contract (for debugging only)
 
 **Done**
-- 
+- [x] Admin access control enforced (admin-only /admin + admin-only server actions).
+- [x] Pairings panel built at `/admin/pairings` (filters: date/locale/status; list/edit/new).
+- [x] Approval validation checks verse join, translation label, literature requirements, excerpt word count, and rationale length.
+- [x] Approval uniqueness policy: block if another approved pairing exists for same date+locale.
 **Blocked**
 - 
 **Next**
@@ -836,6 +839,30 @@ Rationale Examples (10)
 - [ ] Missing-today drill: remove today pairing → fallback verified
 - [ ] Time the daily ops run and confirm ≤15 minutes
 - [ ] Record any contract changes as decisions
+ 
+Dev - Pairings pipeline completeness
+- [ ] Confirm draft → approved pipeline works end-to-end (no manual hacks needed beyond approved SQL if that’s the intended ops path)
+- [ ] Confirm Today join completeness: Today view has all required fields:
+  verse exists + renders
+  reference renders as {canonical_ref} ({translation}) 
+  no nulls for Today payload required fields
+
+DEV — Save/Unsave regression
+- [ ] Save → appears in /saved
+- [ ] Unsave → removed
+- [ ] Repeat 2–3 times (no duplicates / no errors)
+
+OPS — Operator rehearsal (approve → verify Today → verify fallback)
+- [ ] Approve today pairing (draft → approved)
+- [ ] Verify Today shows approved pairing
+- [ ] Flip today pairing to draft (missing-today drill)
+- [ ] Verify Today remains quiet (omit; no placeholder/error)
+- [ ] (If validating delivery fallback) Run cron once + confirm latest invite_deliveries.curation_id uses fallback when today approved is missing
+
+OPS — Expand Safe Pairing Set
+- [ ]Expand safe set to min 10 (target ~20)
+- [ ]All items approved + locale matched + translation label present + tone passes constraints
+
 
 **Done**
 - 
