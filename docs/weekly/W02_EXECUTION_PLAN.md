@@ -688,18 +688,21 @@ Rationale Examples (10)
 
 ## OPS Lane
 **Plan**
-- [ ] Create initial pairings inventory (draft)
-- [ ] Approve at least 1 pairing for “today” (date+locale)
-- [ ] Start Safe Pairing Set seed (target 20 over Week 2; start here)
+- [x] Create initial pairings inventory (draft)
+- [x] Approve at least 1 pairing for “today” (date+locale)
+- [x] Start Safe Pairing Set seed (target 20 over Week 2; start here)
 - [ ] Operator rehearsal (single run)
   - [ ] Approve pairing → verify Today → verify fallback toggle (by removing today)
 
 **Done**
-- 
+- Approved 5 pairings (2026-01-20 to 2026-01-24, en) and logged inventory.
+- Seed Safe Pairing Set (same 5 rows) with checklist + SQL in `docs/ops/day3_pairing_inventory.md`.
+- Verified checklist fields against DB (verse join, translation label, citations, word count cap).
 **Blocked**
 - 
 **Next**
-- 
+- Operator rehearsal: verify Today uses approved pairing; remove today and confirm fallback.
+- Carry-over to Day 4: expand Safe Pairing Set to ~20 items (min 10).
 
 ---
 
@@ -722,30 +725,36 @@ Rationale Examples (10)
 
 ## MASTER Lane
 **Plan**
-- [ ] Run one end-to-end rehearsal and record gaps
-  - [ ] Login → Today (approved pairing shows) → Detail → Save → Saved
-  - [ ] Remove today pairing → fallback appears (no blank day)
-- [ ] Update decision log if any behavioral contract changes
+- [X] Run one end-to-end rehearsal and record gaps
+  - [X] Login → Today (approved pairing shows) → Detail → Save → Saved
+  - [X] Remove today pairing → fallback appears (no blank day)
+- [X] Update decision log if any behavioral contract changes
 
 **Done**
-- 
+- Consolidated Day 3 status across DEV/DESIGN/OPS/MKT and recorded carry-over items.
+- No new behavioral contract decisions logged today.
 **Blocked**
 - 
 **Next**
-- 
 
 ---
 
 ## Today — EVENING GATE (MASTER)
 ### Done
-- 
+- DEV: delivery dedupe verified; quiet invite pipeline wired; approved-only pairing enforced in cron.
+- DESIGN: pairing component spec + wireframe annotations locked; fallback behavior finalized.
+- OPS: 5 approved pairings ready; Safe Pairing Set seed + checklist documented.
+- MKT: quiet invite subject lines + approval gate copy confirmed.
 ### Blocked
-- 
+- DEV: pairings pipeline (draft → approved) + Today join completeness; Save/Unsave regression check.
+- OPS: operator rehearsal (approve → verify Today → verify fallback).
 ### Carry-over (explicit)
-- 
+- DEV: finish pairings pipeline + Today join (verse/ref/translation), verify Save/Unsave.
+- OPS: run operator rehearsal; expand Safe Pairing Set to ~20 (min 10) on Day 4.
+- MASTER: run end-to-end rehearsal + missing-today fallback drill.
 ### Decisions Recorded?
-- [ ] Yes (added to `W02_DECISIONS_LOG.md`)
-- [ ] No
+- [X] Yes (added to `W02_DECISIONS_LOG.md`)
+- [] No
 
 ---
 
