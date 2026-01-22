@@ -80,6 +80,37 @@ Rules:
 **Why:** Prevent accidental sends of unreviewed content while keeping the daily pipeline stable.  
 **Impact:** Cron pairing fetch must filter `status='approved'` and tolerate no results; manual approval happens via SQL or future admin tooling.
 
+## 2025-01-21
+**Decision:**
+Email delivery remains in dry-run mode throughout Week 2; real email sending begins in Week 3.
+**Why:**
+To prevent accidental user emails while validating the full delivery pipeline (cron execution, deduplication, retries, content rendering).
+**Impact:**
+Cron jobs run end-to-end without external side effects. Switching to a real email provider is a controlled, explicit action at Week 3 kickoff.
+
+## 2025-01-21
+**Decision:**
+If no approved pairing exists for Today, the pairing section is omitted entirely from the UI.
+**Why:**
+To preserve the “quiet” experience. Absence should feel intentional, not like an error or missing state.
+**Impact:**
+Users never see placeholder copy, warnings, or “no pairing” messages. The Today view remains visually stable and calm.
+
+## 2025-01-21
+**Decision:**
+Today’s pairing selection is restricted to approved content only, filtered by `(pairing_date, locale)`, with deterministic selection using `created_at DESC, id DESC`.
+**Why:**
+To prevent draft or unreviewed content from being surfaced and to ensure reproducible behavior across environments.
+**Impact:**
+Operational safety is improved, and Today pairing behavior can be consistently reasoned about and debugged.
+
+## 2025-01-21
+**Decision:**
+The Safe Pairing Set is seeded on Day 3 with a small set of approved pairings and expanded on Day 4.
+**Why:**
+To prioritize pipeline correctness and operational safety before scaling content inventory.
+**Impact:**
+Fallback behavior is reliable from Day 3, with capacity to scale without redesigning delivery logic.
 
 ## Template
 ## YYYY-MM-DD
