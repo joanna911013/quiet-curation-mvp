@@ -112,6 +112,22 @@ To prioritize pipeline correctness and operational safety before scaling content
 **Impact:**
 Fallback behavior is reliable from Day 3, with capacity to scale without redesigning delivery logic.
 
+## 2026-01-22
+**Decision:**
+Confirm Safe Pairing Set expansion timeline: seed on Day 3, expand on Day 4 (min 10, target ~20).
+**Why:**
+Make the Day 4 ops target explicit and align daily fallback capacity with approvals.
+**Impact:**
+OPS inventory and daily rehearsal checks are scoped to hit the minimum and track progress to target.
+
+## 2026-01-22
+**Decision:**
+Today main page displays full `verse_text` (no truncation).
+**Why:**
+Ensure the primary reading experience is complete and not clipped on the Today view.
+**Impact:**
+UI rendering on Today must show the full verse text; truncation may apply elsewhere if needed.
+
 ## Template
 ## YYYY-MM-DD
 **Decision:**  

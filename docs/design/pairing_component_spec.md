@@ -43,6 +43,8 @@
 ## Fallback Behavior (No Pairing Available)
 **Decision**
 - Omit the pairing section entirely.
+- No pairing record at all (and no safe fallback enabled) → omit pairing section
+- Safe fallback selected (from safe set) → render normally (+ optional label if allowed)
 
 **Rules**
 - No placeholder copy.
@@ -51,6 +53,7 @@
 
 ## Typography and Spacing Notes
 - Use verse typography and spacing from `docs/design/verse_display_spec.md`.
+- Final visual hierarchy tokens: `docs/design/day4_visual_hierarchy_spec.md`.
 - Add rationale title styling:
   - 13px, weight 600, line-height 1.4, color #4b4b4b.
 - Spacing targets:

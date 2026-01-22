@@ -25,6 +25,7 @@
 - Rationale section:
   - Title: "Why this pairing?"
   - Body: short rationale, target 2-4 lines; clamp to 4 lines with ellipsis (no expand in v1).
+- Attribution line: shown under rationale (or under verse if no rationale); prefix with "— ".
 - Missing states:
   - Verse missing: show "Verse unavailable right now." + "Pull to refresh or try again." (1-2 lines total).
   - Rationale missing: hide rationale section entirely.
@@ -34,10 +35,12 @@
 - Verse text: 17px, weight 400-500, line-height 1.6, color #111111; paragraph spacing 8px.
 - Rationale title: 13px, weight 600, line-height 1.4, color #4b4b4b.
 - Rationale body: 14px, weight 400, line-height 1.5, color #5c5c5c; no italics.
+- Attribution line: 12px, weight 500, line-height 1.4, color #7a7a7a; prefix with "— ".
 - Spacing:
   - Reference -> verse gap: 8px.
   - Verse -> rationale title gap: 14px.
   - Rationale title -> rationale body gap: 6px.
+  - Rationale body -> attribution gap: 8px.
   - Verse block padding: 16px.
   - Verse block margin to next block: 16px.
 
@@ -59,3 +62,7 @@
 - Add label row handling (fallback + approved-only) per spec.
 - Omit pairing section entirely when no pairing is available (no placeholder text).
 - Apply typography + spacing tokens per spec.
+
+## References
+- Visual hierarchy tokens: `docs/design/day4_visual_hierarchy_spec.md`.
+- Source formatting gate: `docs/ops/source_formatting_approval_gate.md`.

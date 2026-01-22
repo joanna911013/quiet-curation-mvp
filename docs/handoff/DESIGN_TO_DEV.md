@@ -1,7 +1,7 @@
 # DESIGN_TO_DEV.md
 Quiet Curation MVP - Design to Dev Handoff
 
-Last updated: 2026-01-18
+Last updated: 2026-01-22
 Owner: Yoanna
 Scope: Wireframes and design docs to implementation rules for Next.js (App Router) + next-intl
 
@@ -161,3 +161,24 @@ Routes (if enabled): /[locale]/emotion, /[locale]/done.
 - No crashes; navigation is stable.
 - Locale routes render for every screen; core strings localized (partial OK for Week 1 gate).
 - Reading experience stays calm (no modal traps, no noisy prompts).
+
+---
+
+## 9) Day 4 Design Handoff — Pairing Hierarchy + Quiet Vibe (2026-01-22)
+Source of truth:
+- docs/design/day4_visual_hierarchy_spec.md
+- docs/design/verse_display_spec.md
+- docs/design/pairing_component_spec.md
+- docs/design/wireframes/day4_pairing_hierarchy_annotations.md
+
+Implementation notes:
+- Today pairing preview: reference line + 2-line verse excerpt only; target block height 80-96px; no rationale or attribution.
+- Detail pairing: full verse, then title "Why this pairing?" + rationale body (clamp 4 lines), then attribution line with exact em dash prefix "— ".
+- Fallback: omit pairing section entirely when no pairing is available; no placeholder copy or error styling.
+- Container styling: padding 16px, radius 16px, border rgba(0,0,0,0.06), background #ffffff to #fafafa, no heavy shadow.
+- Micro-interaction: subtle hover/press only (opacity ~0.96 or border to rgba(0,0,0,0.12)); no fill inversion.
+
+Guardrails:
+- No banner-like callouts or high-contrast blocks.
+- No warning or alert icons inside the pairing block.
+- "Alternate pairing" label only if already approved; otherwise omit.

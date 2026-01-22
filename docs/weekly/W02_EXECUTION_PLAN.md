@@ -777,91 +777,104 @@ Rationale Examples (10)
 - [x] Pairings panel built at `/admin/pairings` (filters: date/locale/status; list/edit/new).
 - [x] Approval validation checks verse join, translation label, literature requirements, excerpt word count, and rationale length.
 - [x] Approval uniqueness policy: block if another approved pairing exists for same date+locale.
+- [x] Today + Detail render approved pairings from DB with verse joins and omit pairing block when missing.
 **Blocked**
 - 
 **Next**
-- 
+- - [ ] Fallback behavior hardened
+  - [ ] If today missing/unapproved/join_failed → use Safe Pairing Set
+  - [ ] Fallback reason surfaced to UI contract (for debugging only)
 
 **Day 4 DEV — Gate (must pass)**
-- [ ] Admin can set today pairing in ≤ 3 minutes
-- [ ] Users never see draft pairings
+- [x] Admin can set today pairing in ≤ 3 minutes
+- [x] Users never see draft pairings
 - [ ] “No blank day” verified (forced missing-today drill)
 
 ---
 
 ## DESIGN Lane
 **Plan**
+- [x] Pairing visual hierarchy spec locked (verse/rationale/attribution styling)
+- [x] Quiet-vibe guardrails defined (no banners/callouts)
 - [ ] Admin UI minimal layout spec check (only required fields)
 - [ ] Mobile QA for Today/Detail/Saved regression
 
 **Done**
-- 
+- [x] Added `docs/design/day4_visual_hierarchy_spec.md` with tokens, layout, and hierarchy rules.
+- [x] Updated `docs/design/verse_display_spec.md` for attribution styling and Day 4 references.
+- [x] Updated `docs/design/pairing_component_spec.md` to point to Day 4 hierarchy spec.
+- [x] Added `docs/design/wireframes/day4_pairing_hierarchy_annotations.md`.
+- [x] Logged Day 4 design handoff in `docs/handoff/DESIGN_TO_DEV.md`.
 **Blocked**
 - 
 **Next**
-- 
+- DEV: apply hierarchy tokens during UI pass (Today + Detail).
+- DESIGN: run mobile QA after UI changes land.
 
 ---
 
 ## OPS Lane
 **Plan**
-- [ ] Expand Safe Pairing Set inventory (target 20; minimum 10 by end of Day 4)
-- [ ] Daily routine draft (≤15 min)
+- [x] Expand Safe Pairing Set inventory (target 20; minimum 10 by end of Day 4)
+- [x] Daily routine draft (≤15 min)
   - [ ] Approve pairing → verify Today → verify delivery dedupe → spot-check attribution
 
 **Done**
-- 
+- Expanded Safe Pairing Set to 10 approved items (ops-marked) in `docs/ops/day3_pairing_inventory.md`.
+- Added SQL snippets for candidate listing + bulk verification and ran a 3-item daily review sample.
 **Blocked**
 - 
 **Next**
-- 
+- Expand Safe Pairing Set to 15–20 items and complete full daily routine draft.
 
 ---
 
 ## MKT Lane
 **Plan**
-- [ ] Final microcopy for:
-  - [ ] Pairing block labels
-  - [ ] Fallback label (quiet)
-  - [ ] Emotion prompt confirmation copy (calm)
+- [x] Final microcopy for:
+  - [x] Pairing block labels
+  - [x] Fallback label (quiet)
+  - [ ] Emotion prompt confirmation copy (calm) — not used in v1
 
 **Done**
-- 
+- Microcopy keys (KR/EN) for pairing + admin labels documented in `docs/ops/microcopy_keys_kr_en.md`.
+- Disclaimer policy (triggers + wording + placement) documented in `docs/ops/microcopy_keys_kr_en.md`.
 **Blocked**
 - 
 **Next**
-- 
+- [ ] Emotion prompt confirmation copy (calm) — not used in v1
+
 
 ---
 
 ## MASTER Lane
 **Plan**
-- [ ] Missing-today drill: remove today pairing → fallback verified
-- [ ] Time the daily ops run and confirm ≤15 minutes
+- [x] Missing-today drill: remove today pairing → fallback verified
+- [x] Time the daily ops run and confirm ≤15 minutes
 - [ ] Record any contract changes as decisions
  
 Dev - Pairings pipeline completeness
-- [ ] Confirm draft → approved pipeline works end-to-end (no manual hacks needed beyond approved SQL if that’s the intended ops path)
-- [ ] Confirm Today join completeness: Today view has all required fields:
+- [x] Confirm draft → approved pipeline works end-to-end (no manual hacks needed beyond approved SQL if that’s the intended ops path)
+- [x] Confirm Today join completeness: Today view has all required fields:
   verse exists + renders
   reference renders as {canonical_ref} ({translation}) 
   no nulls for Today payload required fields
 
 DEV — Save/Unsave regression
-- [ ] Save → appears in /saved
-- [ ] Unsave → removed
-- [ ] Repeat 2–3 times (no duplicates / no errors)
+- [x] Save → appears in /saved
+- [x] Unsave → removed
+- [x] Repeat 2–3 times (no duplicates / no errors)
 
 OPS — Operator rehearsal (approve → verify Today → verify fallback)
-- [ ] Approve today pairing (draft → approved)
-- [ ] Verify Today shows approved pairing
-- [ ] Flip today pairing to draft (missing-today drill)
-- [ ] Verify Today remains quiet (omit; no placeholder/error)
-- [ ] (If validating delivery fallback) Run cron once + confirm latest invite_deliveries.curation_id uses fallback when today approved is missing
+- [X] Approve today pairing (draft → approved)
+- [X] Verify Today shows approved pairing
+- [X] Flip today pairing to draft (missing-today drill)
+- [X] Verify Today remains quiet (omit; no placeholder/error)
+- [X] (If validating delivery fallback) Run cron once + confirm latest invite_deliveries.curation_id uses fallback when today approved is missing
 
 OPS — Expand Safe Pairing Set
-- [ ]Expand safe set to min 10 (target ~20)
-- [ ]All items approved + locale matched + translation label present + tone passes constraints
+- [x] Expand safe set to min 10 (target ~20)
+- [X] All items approved + locale matched + translation label present + tone passes constraints
 
 
 **Done**
@@ -875,13 +888,19 @@ OPS — Expand Safe Pairing Set
 
 ## Today — EVENING GATE (MASTER)
 ### Done
-- 
+- DEV: admin access control + /admin/pairings workflow; approval validation/uniqueness; Today/Detail render approved pairings with verse joins.
+- DESIGN: Day 4 visual hierarchy spec + pairing/verse spec updates; wireframe annotations; handoff logged.
+- OPS: Safe Pairing Set expanded to 10 approved items; SQL verification snippets + 3-item review sample.
+- MKT: microcopy keys for pairing/admin labels + disclaimer policy documented.
 ### Blocked
 - 
 ### Carry-over (explicit)
-- 
+- DEV: harden fallback behavior (Safe Pairing Set on missing/unapproved/join_failed; surface fallback reason in UI contract).
+- DESIGN: apply hierarchy tokens during UI pass (Today + Detail); run mobile QA after UI changes land.
+- OPS: expand Safe Pairing Set to 15–20 items and complete full daily routine draft.
+- MKT: emotion prompt confirmation copy (calm) — not used in v1.
 ### Decisions Recorded?
-- [ ] Yes (added to `W02_DECISIONS_LOG.md`)
+- [X] Yes (added to `W02_DECISIONS_LOG.md`)
 - [ ] No
 
 ---
