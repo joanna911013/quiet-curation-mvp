@@ -1,7 +1,7 @@
 # DESIGN_TO_DEV.md
 Quiet Curation MVP - Design to Dev Handoff
 
-Last updated: 2026-01-22
+Last updated: 2026-01-23
 Owner: Yoanna
 Scope: Wireframes and design docs to implementation rules for Next.js (App Router) + next-intl
 
@@ -182,3 +182,21 @@ Guardrails:
 - No banner-like callouts or high-contrast blocks.
 - No warning or alert icons inside the pairing block.
 - "Alternate pairing" label only if already approved; otherwise omit.
+
+---
+
+## 10) Day 5 Design Handoff — Mobile Polish + Emotion UI (2026-01-23)
+Source of truth:
+- docs/design/day5_mobile_polish_spec.md
+- docs/design/day5_emotion_ui_polish.md
+- docs/design/wireframes/day5_mobile_polish_annotations.md
+
+Implementation notes:
+- Overflow rules: reference 1-line ellipsis; verse Today clamp=2, Detail no truncation; rationale clamp=4; attribution 1 line with \"— \"; buttons/labels 1 line.
+- Today pairing preview height target 80-96px; if stress, compress gaps before font sizes.
+- Safe-area: add `padding-bottom: calc(16px + env(safe-area-inset-bottom))` on main wrappers; add bottom spacer in scroll containers.
+
+Emotion UI:
+- Confirmation: inline \"Logged for today\" under chips or near CTA; no banner.
+- Error: inline \"Unable to save right now.\" + \"Try again\"; no alert block.
+- Selection: calm highlight (light tint + border), no saturated fills.

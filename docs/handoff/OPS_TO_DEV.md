@@ -1,5 +1,5 @@
 # OPS To DEV
-Last updated: 2026-01-22
+Last updated: 2026-01-23
 
 Handoff notes for operational requirements that impact implementation and data workflows.
 
@@ -7,6 +7,7 @@ Handoff notes for operational requirements that impact implementation and data w
 - Expanded Safe Pairing Set to 10 approved items (ops-marked) and documented in `docs/ops/day3_pairing_inventory.md`.
 - Approved the 2026-01-21 pairing and inserted new approved pairings for 2026-01-27 to 2026-02-01 (public domain sources).
 - Added SQL for candidate listing + bulk verification and a daily review checklist with a 3-item sample run.
+- Created `docs/ops/daily_ops_routine_v1.md` (daily ops routine v1) with UI + SQL steps and pass/fail checks.
 - No DB flag for safe set yet; currently tracked as `safe_set? = yes (ops)` in docs only.
 
 ## Links

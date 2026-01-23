@@ -128,6 +128,14 @@ Ensure the primary reading experience is complete and not clipped on the Today v
 **Impact:**
 UI rendering on Today must show the full verse text; truncation may apply elsewhere if needed.
 
+## 2026-01-23
+**Decision:**
+`invite_deliveries` is service-only (no user policies; RLS enabled with no user access).
+**Why:**
+Delivery logs are operational data and should not be readable/writable by end users.
+**Impact:**
+Cron/service role writes bypass RLS; users cannot read or modify delivery rows.
+
 ## Template
 ## YYYY-MM-DD
 **Decision:**  

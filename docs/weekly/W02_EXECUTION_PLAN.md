@@ -822,6 +822,7 @@ Rationale Examples (10)
 **Done**
 - Expanded Safe Pairing Set to 10 approved items (ops-marked) in `docs/ops/day3_pairing_inventory.md`.
 - Added SQL snippets for candidate listing + bulk verification and ran a 3-item daily review sample.
+- Created daily ops routine v1 in `docs/ops/daily_ops_routine_v1.md` (UI + SQL pass/fail steps).
 **Blocked**
 - 
 **Next**
@@ -925,7 +926,10 @@ OPS — Expand Safe Pairing Set
   - [ ] Log emotion save failures
 
 **Done**
-- 
+- [x] Emotion logging end-to-end shipped (required primary emotion, memo cap, logged-today state, idempotent upsert).
+- [x] RLS verified for user-scoped tables; emotion_events enforced own-only CRUD.
+- [x] E2E QA scenarios documented (Week 2 final runbook).
+- [x] Observability hooks added (today.fetch_failed, pairing.join_failed, emotion.save_failed, cron events).
 **Blocked**
 - 
 **Next**
@@ -935,8 +939,8 @@ OPS — Expand Safe Pairing Set
 
 ## DESIGN Lane
 **Plan**
-- [ ] Emotion UI: minimal, skippable, calm confirmation
-- [ ] Final mobile QA checklist (Today/Detail/Saved/Profile)
+- [X] Emotion UI: minimal, skippable, calm confirmation
+- [X] Final mobile QA checklist (Today/Detail/Saved/Profile)
 
 **Done**
 - 
@@ -949,9 +953,9 @@ OPS — Expand Safe Pairing Set
 
 ## OPS Lane
 **Plan**
-- [ ] Finalize daily runbook (≤15 min; copy/paste steps)
-- [ ] Spot-check 3 approved pairings for attribution compliance
-- [ ] Confirm Safe Pairing Set inventory meets minimum
+- [X] Finalize daily runbook (≤15 min; copy/paste steps)
+- [X] Spot-check 3 approved pairings for attribution compliance
+- [X] Confirm Safe Pairing Set inventory meets minimum
 
 **Done**
 - 
@@ -964,12 +968,13 @@ OPS — Expand Safe Pairing Set
 
 ## MKT Lane
 **Plan**
-- [ ] Release notes bullets (internal)
-- [ ] Quiet invite copy final (if any adjustments needed)
-- [ ] Confirm disclaimer trigger rule is consistent with ops checklist
+- [x] Release notes (user-facing, quiet)
+- [x] Quiet Invite email copy iteration (subject lines + body variants)
 
 **Done**
-- 
+- Release notes drafted in `docs/ops/release_notes_v0.1_user_facing.md`.
+- Quiet Invite subject lines + body variants drafted in `docs/ops/quiet_invite_copy_variants_vNext.md`.
+- Microcopy keys for CTA/unsubscribe/disclaimer included in the copy variants doc.
 **Blocked**
 - 
 **Next**
@@ -984,3 +989,17 @@ OPS — Expand Safe Pairing Set
 - [ ] Save/Unsave loop stable; Saved list accurate per user (RLS)
 - [ ] Emotion logs save + user isolation verified
 - [ ] Daily ops runnable in ≤15 minutes (timed)
+
+---
+
+# Day 6 — Security/Config Review + RLS Hardening
+
+**Next**
+- Optional: add admin-wide select policy for profiles if needed later.
+
+## Carry-over (from Day 5)
+- Dev: add admin-wide select policy for profiles if needed later. (optional)
+- DESIGN: Test out with mobile QA checklist (Today/Detail/Saved/Profile) and confirm emotion UI polish.
+- OPS: Finalize daily runbook (≤15 min) and spot-check approved pairings for attribution compliance.
+- MKT: release notes bullets, quiet invite copy final, and disclaimer trigger rule confirmation.
+- MKT : Framer page redesign  (email opt-in web MVP experience)
