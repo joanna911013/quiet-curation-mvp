@@ -2,7 +2,6 @@
 
 ## Summary
 - Pairing block stays secondary and calm; no banner-like treatments or heavy callouts.
-- Today preview is compact (target 80-96px tall) with reference + 2-line excerpt only.
 - Detail shows full verse, then a light rationale section titled "Why this pairing?" (clamp 4 lines).
 - Attribution is tertiary, with a small em dash line beneath the rationale (or beneath verse if no rationale).
 - Fallback: omit pairing section entirely when no pairing is available; if fallback pairing exists, render normally.

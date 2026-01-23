@@ -167,12 +167,11 @@ Canonical verse records per locale/translation.
 | book | text | not null | |
 | chapter | int | not null | |
 | verse | int | not null | |
-| text | text | not null | verse body |
+| verse_text | text | not null | verse body |
 | embedding | vector | nullable | |
 | created_at | timestamptz | not null, default now() | |
 | locale | text | not null, default 'en' | "en" or "ko" |
 | canonical_ref | text | nullable | e.g., "Psalm 30:5" |
-| verse_text | text | nullable | |
 
 ### verse_embeddings
 Vector embeddings for verses (pgvector).

@@ -57,7 +57,7 @@
 - Error: use screen-level error state; do not show pairing-level error copy.
 
 ## DEV Implementation Checklist
-- Apply Today truncation rules (2-line clamp + 140-char fallback + ellipsis) and hide rationale.
+- Today (Preview): full verse_text (no truncation) and hide rationale.
 - Detail shows full verse text; rationale heading "Why this pairing?" and clamp to 4 lines; hide rationale if missing.
 - Add label row handling (fallback + approved-only) per spec.
 - Omit pairing section entirely when no pairing is available (no placeholder text).
