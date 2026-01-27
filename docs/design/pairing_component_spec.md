@@ -4,31 +4,35 @@
 - Pairings feel discovered, not explained.
 - Absence feels quiet, not broken.
 
-## Today (Preview)
+## Today (Main)
 **Purpose**
-- Make the presence of a pairing recognizable at a glance without becoming the hero.
+- Present the day’s literature first, then the verse, and quietly invite the reader to the rationale on Detail.
 
 **Layout**
-- Compact card or inline block inside the Today flow.
-- Content: verse reference line + 1-2 line verse excerpt only.
-- No rationale or explanatory text on Today.
+- Inline block inside the Today flow (no banner treatment).
+- Content order:
+  1) Literature block (full text, preserve line breaks).
+  2) Verse block (reference line + full verse text).
+  3) Quiet CTA row (ghost button): EN “Click to see explanations” / KR “연결고리 보려면 클릭”.
+- No rationale text on Today.
 
 **Tone**
-- Quiet, secondary emphasis; skimmable in under 3 seconds.
+- Quiet, secondary emphasis; calm reading rhythm without callouts.
 
 **Constraints**
-- Do not push primary content down; keep max visual height tight (target 80-96px).
-- Use Today truncation rules from `docs/design/verse_display_spec.md`.
+- Two distinct blocks inside one card; each block has subtle border/background.
+- Literature and verse use same font size; distinguish by color (literature slightly lighter).
+- No truncation for literature or verse on Today; reference line remains single-line ellipsis.
 
 ## Detail (Expanded)
 **Purpose**
 - Provide supportive context for reflection without taking over the screen.
 
 **Layout**
-- Verse block first (full text).
-- Rationale section below with a clear title and short body:
-  - Title: "Why this pairing?" (alt copy allowed, same tone family)
-  - Rationale body: 2-4 lines max; clamp at 4 lines with ellipsis.
+- Literature section first (title/meta/text).
+- Divider line between literature and verse (no verse card container).
+- Verse section (reference + full text) directly below literature.
+- Explanation/rationale blocks remain as-is below verse (no content/label changes).
 
 **Tone**
 - Reflective, not instructional.
@@ -37,8 +41,8 @@
 
 
 **Hierarchy**
-- Verse remains primary.
-- Rationale is supportive and visually lighter.
+- Literature + verse are primary (equal weight).
+- Rationale remains supportive and visually lighter.
 
 ## Fallback Behavior (No Pairing Available)
 **Decision**

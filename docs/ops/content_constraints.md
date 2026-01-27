@@ -22,7 +22,7 @@ MVP shows:
 
 ## 2) Content Types & Length
 ### 2.1 Literature Snippet
-- Length: **2–3 sentences max** (or <= 280 characters, per locale)
+- Length: **<= 70 words** (hard cap, per locale)
 - Must include: **author + work title** (if known)
 - Must be **verifiable** and ideally **public domain** for MVP
 - Tone: reflective, human, non-preachy
@@ -75,7 +75,7 @@ Before an item can be “published” in the MVP DB:
 - No hallucinated citations.
 
 ### Gate B — Brevity & Clarity
-- Literature <= 3 sentences
+- Literature <= 70 words
 - Scripture exactly 1 verse
 - Reads comfortably within **10–20 seconds**
 

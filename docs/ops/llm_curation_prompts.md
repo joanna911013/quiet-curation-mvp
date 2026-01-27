@@ -39,7 +39,7 @@ LLM must output a single JSON object:
     "source_hint": "string or null"
   },
   "emotion_suggestions": ["peace|anxiety|weariness|loneliness|hope|gratitude|grief|confusion|joy"],
-  "matching_rationale_short": "1 sentence max, non-preachy, optional",
+  "matching_rationale": "calm, non-preachy (required)",
   "quality_checks": {
     "no_guilt": true,
     "non_moralizing": true,

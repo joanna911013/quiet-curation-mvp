@@ -48,14 +48,14 @@ where pairing_date = 'YYYY-MM-DD'
 
 ### B) Generate/select verse pairing
 **Selection rules**
-- If manually curated: choose a verse_id from the NIV set and write a short rationale.
+- If manually curated: choose a verse_id from the NIV set and write a rationale.
 - If missing: select from the Safe Pairing Set list in `docs/ops/day3_pairing_inventory.md`.
 
 **Guardrails (pass/fail)**
 - [ ] verse_id exists in `public.verses`
 - [ ] translation label present (e.g., NIV)
 - [ ] attribution fields present (author/title/source)
-- [ ] rationale_short is brief (2–4 lines max)
+- [ ] rationale is present
 
 ### C) Approve pairing snapshot for (date, locale)
 **UI steps**
@@ -90,13 +90,13 @@ where p.pairing_date = 'YYYY-MM-DD'
 - Verse reference format: `{Book} {Chapter}:{Verse} ({Translation})`
 - Verse text renders
 - Attribution line uses em dash prefix `— ` and correct fields
-- Open Detail: full verse text + rationale clamp + attribution placement
+- Open Detail: full verse text + rationale + attribution placement
 
 **Pass/Fail**
 - [ ] Today pairing block renders correctly
 - [ ] Reference format correct and translation label present
 - [ ] Attribution line format matches approval gate
-- [ ] Detail view renders full verse + rationale clamp
+- [ ] Detail view renders full verse + rationale
 
 ### E) Verify email preview + deep link
 **Preview method (pick one)**

@@ -14,7 +14,7 @@ Wireframe: `docs/design/wireframes/03_detail.png`
 B1. Verse block appears first (full text).
 B2. Add a rationale section below the verse:
     - Title: "Why this pairing?"
-    - Body: 2-4 lines max (clamped at 4 lines).
+    - Body: full text (no clamp).
     - Use spacing or a subtle divider to distinguish verse and rationale without adding visual noise.
 B3. Rationale should be lighter in weight than the verse.
 

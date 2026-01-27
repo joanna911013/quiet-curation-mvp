@@ -98,7 +98,7 @@
 - [ ] Finalize tables:
   - [X] `verses` (locale, translation, book, chapter, verse, canonical_ref, verse_text)
   - [X] `verse_embeddings` (verse_id FK, embedding vector, model, dims)
-  - [] `pairings` (pairing_date, locale, verse_id FK, curation_id optional, rationale_short, status)
+  - [] `pairings` (pairing_date, locale, verse_id FK, curation_id optional, rationale, status)
   - [X] `emotion_events` (user_id, event_date, emotion_primary, memo_short optional, pairing_id/curation_id recommended)
 - [X] Add constraints:
   - [X] Unique: `pairings(pairing_date, locale)`

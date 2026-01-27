@@ -80,7 +80,7 @@ where id = 'PAIRING_ID';
 ```
 
 4) Tone passes constraints (quiet/reflective; no preachy/marketing/AI tone)
-- Operator check: read `literature_text` and `rationale_short` for calm, non-coercive tone.
+- Operator check: read `literature_text` and `rationale` for calm, non-coercive tone.
 
 ## SQL (Day 4)
 1) List candidate approved pairings (by locale + status)
@@ -113,8 +113,7 @@ select
   p.literature_author,
   p.literature_title,
   p.literature_source,
-  array_length(regexp_split_to_array(trim(p.literature_text), '\\s+'), 1) as word_count,
-  array_length(regexp_split_to_array(trim(p.rationale_short), '\\s+'), 1) as rationale_word_count
+  array_length(regexp_split_to_array(trim(p.literature_text), '\\s+'), 1) as word_count
 from public.pairings p
 join public.verses v on v.id = p.verse_id
 where p.id in (
@@ -145,7 +144,7 @@ Checklist (repeatable):
 3) Tone guardrails
    - quiet/reflective, not salesy or moralizing
    - no urgency/guilt language
-   - rationale_short remains brief (<= 2–4 lines)
+   - rationale is present
 
 Today sample (3):
 | pairing_id | pairing_date | verse correctness | attribution formatting | tone guardrails | rationale length |

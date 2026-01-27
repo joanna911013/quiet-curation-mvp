@@ -3,16 +3,18 @@
 ## Today (/)
 Wireframe: `docs/design/wireframes/02.home.png`
 
-- Pairing block is compact and secondary (no banner treatment).
-- Show reference line + 1-2 line verse excerpt only.
-- Use subtle border, no shadow; keep height in the 80-96px range.
-- No rationale or attribution in Today preview.
+- Pairing block remains secondary (no banner treatment).
+- Two inner blocks: Literature block first, Verse block second (both full text).
+- Add CTA row as ghost button: EN "Click to see explanations" / KR "연결고리 보려면 클릭".
+- Use subtle borders/backgrounds for each block; allow natural height.
+- No rationale on Today.
 
 ## Detail (/c/[id])
 Wireframe: `docs/design/wireframes/03_detail.png`
 
-- Verse block first, full text.
-- Rationale section below with title "Why this pairing?" and body clamped to 4 lines.
+- Literature section first, then a single divider line.
+- Verse section sits directly below the divider (full text, no card).
+- Explanation/rationale blocks remain below verse (no label changes).
 - Attribution line follows rationale, prefixed with "— ".
 - Styling stays quiet: lighter text, no callout background.
 

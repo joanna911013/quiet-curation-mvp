@@ -1,18 +1,21 @@
 # Day 5 Mobile Polish Spec (Week 2)
 
 ## Summary
-- Prevent mobile overflow in Today/Detail/Emotion with explicit clamp + ellipsis rules.
-- Keep Today pairing preview compact (target 80-96px) while degrading gracefully under stress.
+- Prevent mobile overflow in Today/Detail/Emotion with clear wrapping/ellipsis rules.
+- Today shows full literature + full verse in two distinct inner blocks; ensure long content wraps without overflow.
+- Detail separates literature and verse with a single divider line (no verse card).
 - Respect iOS safe-area so CTAs and inputs never sit under the bottom bar.
 - Maintain quiet vibe: no banners, no loud highlights, no alert-style blocks.
 
 ## A) Text Overflow Rules (Per Element)
+- Literature text (Today): full text, preserve line breaks; allow wrap (no clamp).
 - Reference line: 1 line max, ellipsis always.
 - Verse text:
-  - Today preview: clamp 2 lines; fallback 140 chars trimmed to word boundary + "...".
+  - Today: full text, no truncation; preserve line breaks (pre-line or paragraph split).
   - Detail: full text, no truncation; preserve line breaks (pre-line or paragraph split).
-- Rationale: clamp 4 lines; ellipsis at end only.
+- Rationale: full text, no clamp; allow wrapping.
 - Attribution: 1 line, ellipsis; enforce em dash prefix "— "; do not wrap unless unavoidable (then allow 2nd line, smaller line-height).
+- CTA row (ghost button): 1 line, ellipsis; EN "Click to see explanations" / KR "연결고리 보려면 클릭".
 - Buttons/labels: 1 line max; ellipsis; no wrapping that increases card height.
 
 ## B) Worst-Case Content Guidelines
@@ -20,14 +23,11 @@ Stress cases to validate:
 - Long book names (e.g., "1 Thessalonians"), long verse references, long translation labels.
 - Long verse text (multi-sentence), long rationale, long literature titles/authors.
 
-Degradation order (Today preview):
-1) Truncate attribution first (if present). (Note: Today preview generally has no attribution.)
-2) Clamp verse excerpt to 2 lines + ellipsis.
-3) If height still exceeds 96px, allow reference to shrink in width via ellipsis; do not reduce font size.
-
-Today pairing block height target:
-- Ideal: 80-96px including padding.
-- If overflow persists, keep padding at 16px but allow internal gap compression (see C).
+Degradation order (Today):
+1) Truncate attribution first (if present).
+2) Ensure CTA row remains single-line (ellipsis).
+3) Allow content to extend vertically; do not clamp literature or verse text.
+4) Keep reference line single-line ellipsis; do not reduce font size.
 
 ## C) Spacing Adjustments Under Stress
 Maintain hierarchy while compressing gaps if needed:
@@ -61,14 +61,14 @@ Devices:
 
 Cases:
 - Long verse text (multiple sentences)
-- Long excerpt (Today preview)
+- Long literature excerpt (Today)
 - Long attribution (author/work/source)
-- Long rationale (4+ lines)
+- Long rationale (multi-paragraph)
 - Long title (literature title)
 - Locale switch (EN/KR) if applicable
 
 Pass criteria:
 - No text overflows container bounds.
-- Today pairing preview remains compact and secondary (height target holds).
+- Today remains readable with full literature + verse (no overflow).
 - Detail remains readable; line breaks preserved.
 - CTAs/inputs are above iOS bottom bar and not clipped.

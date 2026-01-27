@@ -198,6 +198,7 @@ Daily pairing per locale.
 | locale | text | not null | "en" or "ko" |
 | verse_id | uuid | fk -> verses.id | required |
 | literature_text | text | not null | |
+| explanations | text | nullable | literature explanation |
 | literature_source | text | nullable | |
 | literature_author | text | nullable | |
 | literature_work | text | nullable | |
@@ -206,8 +207,9 @@ Daily pairing per locale.
 | created_at | timestamptz | not null, default now() | |
 | status | text | not null, default 'draft' | "draft" or "approved" |
 | curation_id | uuid | fk -> items.id | nullable |
-| rationale_short | text | not null, default '' | short rationale |
+| rationale | text | not null, default '' | rationale |
 | literature_title | text | nullable | |
+| pub_year | int | nullable | published year |
 | literature_url | text | nullable | |
 
 Constraints:
