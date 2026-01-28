@@ -19,9 +19,9 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 
 # Day 1 — Real Delivery Readiness + QA Frame
 ## DEV
-- [ ] Choose email provider (Resend or SendGrid) and configure Vercel env vars (Resend selected; Vercel envs pending verify)
+- [x] Choose email provider (Resend or SendGrid) and configure Vercel env vars (Resend selected)
   - `EMAIL_PROVIDER`, provider API key, `EMAIL_FROM` (or provider-specific FROM)
-- [ ] Validate `/api/cron/quiet-invite` in “real send” mode for 1 test recipient (waiting on domain verification)
+- [x] Validate `/api/cron/quiet-invite` in “real send” mode for 1 test recipient
 - [x] Confirm `invite_deliveries` lifecycle: `pending → sent` or `failed (error_message)` (dry-run)
 - [x] Verify deep link return works: `/login?redirect=/c/[id]` → login → correct detail page
 - [x] Draft the Week 3 E2E QA checklist doc (based on Week2 Day5 “Must Pass”) — `docs/testing/W03_D1_E2E_QA_CHECKLIST.md`
@@ -54,15 +54,15 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
     - if event exists for today → “logged today” state
   - [x] Link emotion event to `pairing_id` and/or `curation_id` (recommended)
 - [x] Confirm RLS for user-scoped emotion tables (user A cannot see user B)
+- [ ] Choose email provider (Resend or SendGrid) and configure Vercel env vars (Resend selected; Vercel envs pending verify)
+  - `EMAIL_PROVIDER`, provider API key, `EMAIL_FROM` (or provider-specific FROM)
 
 ## DESIGN
-- [x] Emotion UI polish: lightweight confirmation state (spec) → `docs/design/day5_emotion_ui_polish.md`
-- [x] Update mobile spacing for long content (overflow + clamp behavior) (spec) → `docs/design/day5_mobile_polish_spec.md`
-- [x] Apply UI polish in app (per specs): Emotion confirmation + mobile safe-area + overflow clamps
+- [ ] Emotion UI polish: lightweight confirmation state
+- [ ] Update mobile spacing for long content (overflow + clamp behavior)
 
 ## OPS
-- [x] Validate emotion taxonomy labels match UI usage (tone: calm, not preachy)
-  - UI uses `lib/emotion.ts` labels that match `docs/ops/emotion_taxonomy.md` (Peace/Anxiety/etc.)
+- [ ] Validate emotion taxonomy labels match UI usage (tone: calm, not preachy)
 
 ## MKT
 - [x] Prepare 3–5 subject line variants for next iteration (EN/KR) — `docs/ops/quiet_invite_copy_variants_vNext.md`
@@ -75,9 +75,11 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 - [x] Harden Safe fallback (no blank day)
   - [x] If today pairing missing/unapproved/join_failed → serve Safe Pairing Set item
   - [x] Add admin-only warning in `/admin` dashboard: “Today pairing missing”
-- [ ] Failure behavior hardening
-  - [ ] API fail → stable error state + retry (screen-level, not pairing-level)
+- [x] Failure behavior hardening
+  - [x] API fail → stable error state + retry (screen-level, not pairing-level)
 - [x] Minimal join-failure logging (pairing join fail / today fetch fail)
+- [ ] Choose email provider (Resend or SendGrid) and configure Vercel env vars (Resend selected; Vercel envs pending verify)
+  - `EMAIL_PROVIDER`, provider API key, `EMAIL_FROM` (or provider-specific FROM)
 
 ## DESIGN
 - [ ] Ensure fallback UI behavior is subtle (not an error, no banners)
@@ -202,7 +204,6 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 - [ ] Mini-spike: Capacitor feasibility + auth/deeplink flow check (1–2 days)
 - [ ] Keep Today global; add “For you” 2–3 recs via emotion-based reranking
 - [ ] Add minimal caching + guardrails (never blank day, never break send)
-- [ ] DB performance check: slow query review + missing index audit (pre-v2)
 **DESIGN**
 - [ ] “For you” module design (quiet, secondary; no feed vibes)
 **OPS**
@@ -224,7 +225,6 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 ## Week 8 — v2 stabilization + store submissions (if wrapper ships)
 **DEV**
 - [ ] Bug bash, performance pass, final RLS/security audit
-- [ ] DB/index final review (pre-store submissions)
 - [ ] Submit iOS/Android wrapper builds; monitor review feedback
 - [ ] Buffer for store review feedback + iteration (plan 1–2 weeks if needed)
 **DESIGN**
