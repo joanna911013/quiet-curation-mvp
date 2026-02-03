@@ -45,7 +45,7 @@
 ## Day 2 — Mobile + Email QA Fixes
 ### DEV
 - [X] Fix issues from mobile QA log (safe‑area, overflow, spacing) and update log with “fixed in build X”.
-- [ ] If iOS in‑app auth still fails, apply redirect/cookie fixes and re‑test.
+- [X] If iOS in‑app auth still fails, apply redirect/cookie fixes and re‑test.
 
 ### DESIGN
 - [ ] Execute email template QA and record results in `docs/testing/W03_D4_EMAIL_TEMPLATE_QA.md`.

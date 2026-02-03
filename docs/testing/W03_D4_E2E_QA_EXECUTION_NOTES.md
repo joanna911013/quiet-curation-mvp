@@ -27,8 +27,9 @@ Flow: open email → login (if needed) → correct `/c/[id]`
 - Evidence:
 - Notes:
   - iOS Safari (Vercel URL): PASS (2026-02-02)
-  - iOS in-app browser (Vercel URL): FAIL
-    - Repro: Kakao in-app → open Vercel URL → enter email → open Naver Mail app → click login link → `auth_failed`
+  - iOS in-app browser (Vercel URL): PASS (retest 2026-02-03)
+    - Previous fail repro: Kakao in-app → open Vercel URL → enter email → open Naver Mail app → click login link → `auth_failed`
+    - Recovery: open the site in Safari → request link again → open link in Safari → login success (main page visible)
 
 ---
 
