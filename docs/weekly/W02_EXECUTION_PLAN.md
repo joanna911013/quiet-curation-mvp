@@ -696,7 +696,7 @@ Rationale Examples (10)
 
 **Done**
 - Approved 5 pairings (2026-01-20 to 2026-01-24, en) and logged inventory.
-- Seed Safe Pairing Set (same 5 rows) with checklist + SQL in `docs/ops/day3_pairing_inventory.md`.
+- Seed Safe Pairing Set (same 5 rows) with checklist + SQL in `docs/ops/daily_ops_routine_v1.md`.
 - Verified checklist fields against DB (verse join, translation label, citations, word count cap).
 **Blocked**
 - 
@@ -820,7 +820,7 @@ Rationale Examples (10)
   - [ ] Approve pairing → verify Today → verify delivery dedupe → spot-check attribution
 
 **Done**
-- Expanded Safe Pairing Set to 10 approved items (ops-marked) in `docs/ops/day3_pairing_inventory.md`.
+- Expanded Safe Pairing Set to 10 approved items (ops-marked) with DB verification via `docs/ops/daily_ops_routine_v1.md`.
 - Added SQL snippets for candidate listing + bulk verification and ran a 3-item daily review sample.
 - Created daily ops routine v1 in `docs/ops/daily_ops_routine_v1.md` (UI + SQL pass/fail steps).
 **Blocked**

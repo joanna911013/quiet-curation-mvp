@@ -21,8 +21,8 @@
 
 **Constraints**
 - Two distinct blocks inside one card; each block has subtle border/background.
-- Literature and verse use same font size; distinguish by color (literature slightly lighter).
-- No truncation for literature or verse on Today; reference line remains single-line ellipsis.
+- Typography and spacing must follow the visual hierarchy tokens (see references).
+- Behavior rules (clamps/omissions) follow the verse display spec.
 
 ## Detail (Expanded)
 **Purpose**
@@ -56,16 +56,16 @@
 - If a fallback pairing is used (safe set), render the pairing normally (label may be shown per `docs/design/verse_display_spec.md`).
 
 ## Typography and Spacing Notes
-- Use verse typography and spacing from `docs/design/verse_display_spec.md`.
-- Final visual hierarchy tokens: `docs/design/day4_visual_hierarchy_spec.md`.
-- Add rationale title styling:
-  - 13px, weight 600, line-height 1.4, color #4b4b4b.
-- Spacing targets:
-  - Verse -> rationale title: 14px.
-  - Rationale title -> rationale body: 6px.
+- Use typography/spacing tokens from the visual hierarchy spec.
+- Keep this spec high-level to avoid duplication.
 
 ## Wireframe Annotations
 - See `docs/design/wireframes/day3_pairing_annotations.md`.
+
+## Canonical References
+- Behavior + states: `docs/design/verse_display_spec.md`
+- Visual hierarchy + tokens + quiet-vibe checklist: `docs/design/day4_visual_hierarchy_spec.md`
+- Mobile polish: `docs/design/day5_mobile_polish_spec.md`
 
 ## Supersedes
 - This spec supersedes Day 2 fallback copy guidance in `docs/design/verse_display_spec.md` and in `docs/weekly/W02_EXECUTION_PLAN.md`.

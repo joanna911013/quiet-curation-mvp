@@ -11,4 +11,4 @@ Handoff notes for daily ops status, approvals, and fallback readiness.
 
 ## Links
 - DevOps playbook: `../02_DEVOPS_PLAYBOOK.md`
-- Pairing inventory: `../ops/day3_pairing_inventory.md`
+- Daily ops routine: `../ops/daily_ops_routine_v1.md`

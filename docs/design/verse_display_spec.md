@@ -34,24 +34,8 @@
   - Rationale missing: hide rationale section entirely.
 
 ## Typography and Spacing (Mobile-First)
-- Literature text:
-  - Today: 17px, weight 400, line-height 1.6, color #3f3f3f.
-  - Detail: 16px (1rem), weight 400, line-height 1.8, color #1f1f1f.
-- Reference line: 12px, weight 600, line-height 1.4, color #6b6b6b.
-- Verse text: 17px, weight 500, line-height 1.6, color #111111; paragraph spacing 8px.
-- Rationale title: 13px, weight 600, line-height 1.4, color #4b4b4b.
-- Rationale body: 14px, weight 400, line-height 1.5, color #5c5c5c; no italics.
-- Attribution line: 12px, weight 500, line-height 1.4, color #7a7a7a; prefix with "— ".
-- CTA row: ghost button, 14px, weight 600, line-height 1.4, color #374151; subtle border.
-- Spacing:
-  - Literature block -> verse block gap: 16px.
-  - Reference -> verse gap: 8px.
-  - Verse -> rationale title gap: 14px.
-  - Rationale title -> rationale body gap: 6px.
-  - Rationale body -> attribution gap: 8px.
-  - Verse block -> CTA row gap: 16px.
-  - Verse block padding: 16px.
-  - Verse block margin to next block: 16px.
+- Use the canonical tokens from `docs/design/day4_visual_hierarchy_spec.md`.
+- Keep this spec focused on behavior + states to avoid duplication.
 
 ## Labels (if present)
 - Fallback label text: "Alternate pairing"; show only when fallback pairing is used.

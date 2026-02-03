@@ -34,7 +34,7 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 - [x] Verify approved pairing inventory for today + next 2–4 days (min 5)
 - [x] Record Safe Pairing Set current size and the gap to target (15–20)
   - Safe Pairing Set size: 10 approved (gap: 5–10 to reach 15–20)
-  - Inventory and SQL verification logged in `docs/ops/day3_pairing_inventory.md`
+  - Inventory + SQL verification kept in DB queries (see `docs/ops/daily_ops_routine_v1.md`)
 
 ## MKT
 - [x] Confirm Framer page scope for Email Opt-in Web MVP Experience (documented in `09_LANDING_WAITLIST.md`)
@@ -58,11 +58,11 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
   - `EMAIL_PROVIDER`, provider API key, `EMAIL_FROM` (or provider-specific FROM)
 
 ## DESIGN
-- [ ] Emotion UI polish: lightweight confirmation state
-- [ ] Update mobile spacing for long content (overflow + clamp behavior)
+- [X] Emotion UI polish: lightweight confirmation state
+- [X] Update mobile spacing for long content (overflow + clamp behavior)
 
 ## OPS
-- [ ] Validate emotion taxonomy labels match UI usage (tone: calm, not preachy)
+- [X] Validate emotion taxonomy labels match UI usage (tone: calm, not preachy)
 
 ## MKT
 - [x] Prepare 3–5 subject line variants for next iteration (EN/KR) — `docs/ops/quiet_invite_copy_variants_vNext.md`
@@ -78,20 +78,20 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 - [x] Failure behavior hardening
   - [x] API fail → stable error state + retry (screen-level, not pairing-level)
 - [x] Minimal join-failure logging (pairing join fail / today fetch fail)
-- [ ] Choose email provider (Resend or SendGrid) and configure Vercel env vars (Resend selected; Vercel envs pending verify)
+- [X] Choose email provider (Resend or SendGrid) and configure Vercel env vars (Resend selected; Vercel envs pending verify)
   - `EMAIL_PROVIDER`, provider API key, `EMAIL_FROM` (or provider-specific FROM)
 
 ## DESIGN
-- [ ] Ensure fallback UI behavior is subtle (not an error, no banners)
-- [ ] Admin warning styling: quiet/inline (no aggressive callout)
+- [x] Ensure fallback UI behavior is subtle (not an error, no banners) — `docs/design/day3_fallback_admin_ui_spec.md`
+- [x] Admin warning styling: quiet/inline (no aggressive callout) — `docs/design/day3_fallback_admin_ui_spec.md`
 
 ## OPS
-- [ ] Run 1 rehearsal of Daily Ops Routine (draft v1)
-  - [ ] Approve tomorrow’s curation
-  - [ ] Approve pairing snapshot for date+locale
-  - [ ] Verify Today renders + attribution
-  - [ ] Verify email preview + deep link
-  - [ ] Trigger missing-today scenario and confirm safe fallback appears
+- [x] Run 1 rehearsal of Daily Ops Routine (draft v1)
+  - [x] Approve tomorrow’s curation
+  - [x] Approve pairing snapshot for date+locale
+  - [x] Verify Today renders + attribution
+  - [x] Verify email preview + deep link
+  - [x] Trigger missing-today scenario and confirm safe fallback appears
 
 ## MKT
 - [x] Confirm disclaimer triggers + wording (only when needed) — `docs/ops/microcopy_keys_kr_en.md`
@@ -101,6 +101,7 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 
 # Day 4 — End-to-End QA “Must Pass” Execution
 ## DEV (Must Pass)
+- Execution notes: `docs/testing/W03_D4_E2E_QA_EXECUTION_NOTES.md`
 - [ ] New user flow: `/login → / → open detail → save → /saved`
 - [ ] Email deep link: open email → login (if needed) → correct `/c/[id]`
 - [ ] Admin operation:
@@ -116,12 +117,10 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
   - [ ] simulate API fail → stable error state + retry works
 
 ## DESIGN
-- [ ] Mobile QA pass after UI changes land (iOS safe-area, overflow, spacing)
-- [ ] Email template QA (mobile mail clients: spacing + readability)
+- [X] Mobile QA pass after UI changes land (iOS safe-area, overflow, spacing) - `docs/testing/W03_D1_MOBILE_QA_CHECKLIST.md`
 
 ## OPS
-- [ ] Expand Safe Pairing Set toward 15–20 items (target 20)
-- [ ] Run daily review: sample 3 pairings and verify guardrails
+- [X] Run daily review: sample 3 pairings and verify guardrails
   - tone + attribution + verse correctness
 
 ## MKT
@@ -132,27 +131,30 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 
 # Day 5 — Stabilize + Week 3 Closeout (Docs/Notes)
 ## DEV
-- [ ] Security/Config review
-  - [ ] env secrets safe
-  - [ ] server-only keys remain server-side
-  - [ ] RLS policies correct for user-scoped tables (saved/emotion/etc.)
+- [x] Security/Config review
+  - [x] env secrets safe
+  - [x] server-only keys remain server-side
+  - [x] RLS policies correct for user-scoped tables (saved/emotion/etc.)
 - [x] Observability (MVP)
   - [x] minimal logs for: delivery success/fail, today fetch fail, pairing join fail, emotion save fail
   - [x] cron response includes summary counts (sent/failed/skipped/retried)
-- [ ] Record Week 3 notes + carry-overs into weekly docs
+- [x] Record Week 3 notes + carry-overs into weekly docs
 
 ## DESIGN
-- [ ] Consolidate specs (avoid duplication) and confirm “quiet vibe” checklist passes
-- [ ] Final mobile polish checklist recorded
+- [x] Consolidate specs (avoid duplication) and confirm “quiet vibe” checklist passes
+- [ ] Final mobile polish checklist recorded — `docs/testing/W03_D5_MOBILE_QA_EXECUTION_LOG.md`
+- [ ] iOS/Android dark mode QA + adjustments (ensure no unintended theme shift)
+- [ ] Email template QA (mobile mail clients: spacing + readability) — `docs/testing/W03_D4_EMAIL_TEMPLATE_QA.md`
 
 ## OPS
-- [ ] Finalize “Daily Ops Routine” (v1) doc for Week 2 system
+- [x] Finalize “Daily Ops Routine” (v1) doc for Week 2 system
   - approve tomorrow’s curation
   - generate/select verse pairing
   - approve pairing snapshot for date+locale
   - verify Today rendering + attribution
   - verify email preview + deep link
   - spot-check 3 pairings + check missing-today warnings
+- [ ] Expand Safe Pairing Set toward 15–20 items (target 20)
 
 ## MKT
 - [x] Release notes (user-facing) bullets finalized — `docs/ops/release_notes_v0.1_user_facing.md`
@@ -162,9 +164,29 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 
 ---
 
+## Week 3 Notes + Carry-overs (recorded 2026-01-30)
+- DEV: Resend real sending verified; cron summary output confirmed; domain + Vercel envs verified.
+- DEV: Pairings schema update shipped (rename `rationale_short` -> `rationale`, add `explanations`, remove word/char limits); detail page now shows full rationale + explanations.
+- DEV: Failure retry UI added for Today/Detail; observability logs in place.
+- DEV: Security/config checklist added (`docs/testing/W03_D5_SECURITY_CONFIG_CHECKLIST.md`); profiles role escalation blocked via policy.
+- DEV carry-over: iOS webview auth cookie persistence QA (pending in security checklist).
+- DEV carry-over: Finish Day4 E2E QA execution notes for remaining scenarios.
+- OPS carry-over: Expand Safe Pairing Set toward 15–20 items (target 20).
+
+## Week 4 Carry-over (Not Done in Week 3)
+- DEV: Complete Day 4 E2E QA scenarios + fill execution notes (`docs/testing/W03_D4_E2E_QA_EXECUTION_NOTES.md`).
+- DEV: Stabilize iOS in-app auth flow (magic link + redirect consistency).
+- DESIGN: Final mobile polish checklist log (`docs/testing/W03_D5_MOBILE_QA_EXECUTION_LOG.md`).
+- DESIGN: Email template QA log (`docs/testing/W03_D4_EMAIL_TEMPLATE_QA.md`).
+- DESIGN: iOS/Android dark mode QA + adjustment notes.
+- OPS: Expand Safe Pairing Set to 15–20 items.
+- MKT: Confirm email opt-in page live + release notes final review (if not already verified).
+
+---
+
 ## Week 3 Deliverables (Artifacts)
 - [ ] E2E QA checklist + execution notes (pass/fail + gaps)
-- [ ] Updated Daily Ops Routine (v1)
+- [x] Updated Daily Ops Routine (v1)
 - [x] Emotion logging shipped + verified
 - [x] Safe fallback hardening verified (no blank day)
 - [x] Minimal observability logging in place
@@ -172,65 +194,3 @@ Goal: Turn on real delivery, ship emotion logs, harden fallback + ops routine, a
 
 ---
 
-# Week 4–Week 8 (High-level Plan, Web-first + Capacitor Wrapper Track)
-
-## Week 4 — v1 “Web MVP” release readiness
-**DEV**
-- [ ] Hardening: safe fallback triggers (missing/unapproved/join_failed) + stable UI contract
-- [ ] Security/config review: env separation, server-only keys, tighten service-only tables where appropriate
-- [ ] Release notes + final regression sweep
-**DESIGN**
-- [ ] Apply hierarchy tokens in-app (Today/Detail pairing block) + mobile QA pass
-**OPS**
-- [ ] “Daily Ops Routine v1” finalized + run it end-to-end for 2–3 consecutive days
-**MKT**
-- [ ] User-facing release notes bullets + refine subject/copy variants for next iteration
-**Milestone**
-- [ ] v1 goes live (email opt-in → daily invite → web experience)
-
-## Week 5 — Post‑v1 iteration + newsletter (separate from daily invite)
-**DEV**
-- [ ] Add newsletter track (separate send type/table or channel/type + opt-in + dedupe key)
-- [ ] Add basic analytics events (open detail, save, emotion logged)
-**DESIGN**
-- [ ] Newsletter content card spec (email-first layout constraints)
-**OPS**
-- [ ] Content throughput: build inventory discipline (safe set healthy + tomorrow ready)
-**MKT**
-- [ ] Newsletter onboarding: why it’s different, frequency, samples
-
-## Week 6 — v2 feature work (“For you” light personalization)
-**DEV**
-- [ ] Mini-spike: Capacitor feasibility + auth/deeplink flow check (1–2 days)
-- [ ] Keep Today global; add “For you” 2–3 recs via emotion-based reranking
-- [ ] Add minimal caching + guardrails (never blank day, never break send)
-**DESIGN**
-- [ ] “For you” module design (quiet, secondary; no feed vibes)
-**OPS**
-- [ ] Define acceptance checks for “For you” quality + safety
-**MKT**
-- [ ] Messaging for v2: “2–3 quiet suggestions, based on what you felt.”
-
-## Week 7 — Mobile packaging track (parallel, optional)
-**DEV**
-- [ ] Capacitor wrapper build: auth + deep link routing, offline/PWA basics, privacy manifest/app tracking declarations
-- [ ] Push strategy decision: web push for PWA vs native push later
-**DESIGN**
-- [ ] Store listing basics: icon, screenshots, minimal brand pack
-**OPS**
-- [ ] Operational readiness for dual distribution (web + wrapper)
-**MKT**
-- [ ] Pre-launch narrative: “the quietest place on your phone” positioning (understated)
-
-## Week 8 — v2 stabilization + store submissions (if wrapper ships)
-**DEV**
-- [ ] Bug bash, performance pass, final RLS/security audit
-- [ ] Submit iOS/Android wrapper builds; monitor review feedback
-- [ ] Buffer for store review feedback + iteration (plan 1–2 weeks if needed)
-**DESIGN**
-- [ ] Final screenshot set + microcopy sweep
-**OPS**
-- [ ] Runbook updates for store + web
-**MKT**
-- [ ] Launch sequence: v2 announcement + newsletter cadence aligned
-```

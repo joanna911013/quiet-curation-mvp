@@ -31,7 +31,7 @@ MLOps is intentionally minimal for the MVP. The pipeline is batch-first, human-a
 
 ## Outputs / Artifacts
 - Approved daily snapshots in `pairings`.
-- Safe Pairing Set list in `ops/day3_pairing_inventory.md`.
+- Safe Pairing Set tracked in DB; verification SQL in `ops/daily_ops_routine_v1.md`.
 - Prompt assets and constraints in ops docs.
 
 ## Future (Week 3+)
@@ -45,5 +45,5 @@ MLOps is intentionally minimal for the MVP. The pipeline is batch-first, human-a
 - LLM curation prompts: `ops/llm_curation_prompts.md`
 - Source formatting gate: `ops/source_formatting_approval_gate.md`
 - Critic validation results: `prompts/08_CRITIC_PROMPT_VALIDATION.md`
-- Pairing inventory: `ops/day3_pairing_inventory.md`
+- Pairing inventory: query `pairings` directly (see `ops/daily_ops_routine_v1.md`)
 - Decisions log: `weekly/W02_DECISIONS_LOG.md`

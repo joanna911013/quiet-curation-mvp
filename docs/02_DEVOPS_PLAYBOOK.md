@@ -26,7 +26,7 @@ Detailed checklist and SQL snippets live in `ops/daily_ops_routine_v1.md`.
 
 ## Preflight Checklist
 - Admin access to /admin is working.
-- Safe Pairing Set inventory is updated (`ops/day3_pairing_inventory.md`).
+- Safe Pairing Set is populated in DB (verify via `ops/daily_ops_routine_v1.md` SQL).
 - Env vars validated (`ops/env-vars.md`).
 - Cron auth secret available for dry-run.
 - Supabase SQL Editor access available for spot checks.
@@ -46,7 +46,6 @@ Detailed checklist and SQL snippets live in `ops/daily_ops_routine_v1.md`.
 
 ## Links
 - Daily ops routine (step-by-step): `ops/daily_ops_routine_v1.md`
-- Safe Pairing Set inventory: `ops/day3_pairing_inventory.md`
 - Env vars + scopes: `ops/env-vars.md`
 - Security review (Week 2 Day 5): `ops/security_review_w02_d5.md`
 - Execution plan (Week 2): `weekly/W02_EXECUTION_PLAN.md`

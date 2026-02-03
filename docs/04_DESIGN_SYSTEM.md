@@ -36,6 +36,7 @@ Design system summary for the MVP. This file captures the current UI rules used 
 - No overflow for long refs or long verse text.
 
 ## Links (Canonical Specs)
+- Specs index (single source of truth): `design/specs_index.md`
 - Principles: `design/principles.md`
 - Typography: `design/typography.md`
 - Components: `design/components.md`

@@ -198,4 +198,15 @@ Implementation notes:
 Emotion UI:
 - Confirmation: inline \"Logged for today\" under chips or near CTA; no banner.
 - Error: inline \"Unable to save right now.\" + \"Try again\"; no alert block.
+
+---
+
+## 11) Day 3 Design Handoff — Fallback + Admin Warning (2026-01-28)
+Source of truth:
+- docs/design/day3_fallback_admin_ui_spec.md
+
+Implementation notes:
+- Fallback UI must render normally; no warning banners or alert tone.
+- Admin warning \"Today pairing missing\" should be an inline neutral row (no amber background, no icons).
+- Keep the admin warning visually lighter than primary admin actions.
 - Selection: calm highlight (light tint + border), no saturated fills.

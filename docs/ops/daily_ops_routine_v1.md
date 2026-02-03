@@ -4,7 +4,7 @@ Last updated: 2026-01-23
 Repeatable daily routine for Week 2 operations. This is the runbook an operator can follow end-to-end without developer intervention.
 
 ## Preconditions (max 5)
-- Safe Pairing Set is seeded and tracked in `docs/ops/day3_pairing_inventory.md` (ops-marked).
+- Safe Pairing Set is seeded in DB (use `is_safe_set = true` if available).
 - Admin access to the app (`/admin`) is working.
 - Supabase SQL Editor access is available (service role or project admin).
 - Vercel deployment URL is known and reachable.
@@ -25,7 +25,7 @@ Repeatable daily routine for Week 2 operations. This is the runbook an operator 
 - Select tomorrow’s item → verify required fields → approve
 
 **Validation checklist (pass/fail)**
-- [ ] literature_text is present and <= 70 words
+- [ ] literature_text is present
 - [ ] literature_author and/or literature_title present
 - [ ] literature_source present (public domain or verified source)
 - [ ] Tone is quiet/reflective (no guilt/marketing/AI voice)
@@ -49,7 +49,7 @@ where pairing_date = 'YYYY-MM-DD'
 ### B) Generate/select verse pairing
 **Selection rules**
 - If manually curated: choose a verse_id from the NIV set and write a rationale.
-- If missing: select from the Safe Pairing Set list in `docs/ops/day3_pairing_inventory.md`.
+- If missing: select from the Safe Pairing Set in DB (prefer `is_safe_set = true`).
 
 **Guardrails (pass/fail)**
 - [ ] verse_id exists in `public.verses`
@@ -164,15 +164,11 @@ where pairing_date = 'YYYY-MM-DD'
   and status = 'approved';
 ```
 
-**4) List Safe Pairing Set IDs (ops list) + approved status**
+**4) List Safe Pairing Set + approved status**
 ```sql
 select id, pairing_date, locale, status
 from public.pairings
-where id in (
-  -- paste Safe Pairing Set IDs from docs/ops/day3_pairing_inventory.md
-  'PAIRING_ID_1',
-  'PAIRING_ID_2'
-)
+where is_safe_set = true
 order by pairing_date asc;
 ```
 
