@@ -52,14 +52,18 @@
 - [ ] Draft dark‑mode decision options: **lock light** vs **support dark**, with pros/cons and recommended choice.
 
 ### OPS
-- [ ] Verify Safe Pairing Set health after additions (spot‑check 3 items).
-- [ ] Spot‑check 3 pairings for attribution + verse correctness; record any fixes.
+- [x] Verify Safe Pairing Set health after additions (spot‑check 3 items).
+- [x] Spot‑check 3 pairings for attribution + verse correctness; record any fixes.
+  - Checked: 24a4a110-66d5-4785-afba-30dbc0dd7fa3, 24a78af2-080c-43d1-908d-490d7229e059, 409157fd-e65a-4dec-aa89-1ed354d648c9
 
 ### MKT
 - [ ] (Carry-over) Verify Framer opt‑in page live state (copy/layout/CTA) and note issues.
 - [ ] (Carry-over) Update release‑notes draft if QA finds user‑visible changes.
-- [ ] Finalize Week 4 send: subject + preheader (EN/KR).
-- [ ] Align quiet‑tone copy with any UX changes (if needed).
+- [x] Finalize Week 4 send: subject + preheader (EN/KR).
+  - Subject is system‑fixed: `Quiet Quration : {literature_title}` (confirm exact spelling in prod)
+  - Preheader: not configurable (N/A)
+- [x] Align quiet‑tone copy with any UX changes (if needed).
+  - No user‑visible UX changes logged in QA notes; copy remains unchanged.
 
 ---
 
