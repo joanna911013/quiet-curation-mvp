@@ -13,7 +13,7 @@ Wireframe: `docs/design/wireframes/03_detail.png`
 
 B1. Verse block appears first (full text).
 B2. Add a rationale section below the verse:
-    - Title: "Why this pairing?"
+    - Title: use microcopy key "pairing.rationale_heading" (localized).
     - Body: full text (no clamp).
     - Use spacing or a subtle divider to distinguish verse and rationale without adding visual noise.
 B3. Rationale should be lighter in weight than the verse.

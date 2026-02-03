@@ -4,7 +4,7 @@
 
 | key | EN | KR | where shown | notes |
 | --- | --- | --- | --- | --- |
-| pairing.rationale_heading | Why this pairing? | 왜 이 조합일까요? | Pairing Detail rationale heading | User-facing; shows only when rationale exists. |
+| pairing.rationale_heading | Why this pairing? | 연결고리 설명 | Pairing Detail rationale heading | User-facing; shows only when rationale exists. |
 | pairing.fallback_label | Alternate pairing | 다른 조합 | Pairing label (Today/Detail) | User-facing; show only when safe_fallback_used = true. |
 | pairing.verse_missing_short | Verse unavailable right now. | 지금은 구절을 볼 수 없어요. | Pairing missing state | User-facing; conditional only. |
 | pairing.verse_missing_hint | Pull to refresh or try again. | 아래로 당겨 새로고침하거나 다시 시도해 보세요. | Pairing missing state | User-facing; conditional only. |

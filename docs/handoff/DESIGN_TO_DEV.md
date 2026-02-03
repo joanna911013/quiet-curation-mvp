@@ -173,7 +173,7 @@ Source of truth:
 
 Implementation notes:
 - Today pairing order: literature block (full) then verse block (full); add CTA ghost button row (EN “Click to see explanations” / KR “연결고리 보려면 클릭”).
-- Detail pairing: full verse, then title "Why this pairing?" + rationale body (no clamp), then attribution line with exact em dash prefix "— ".
+- Detail pairing: full verse, then title uses `pairing.rationale_heading` (EN "Why this pairing?" / KR "연결고리 설명") + rationale body (no clamp), then attribution line with exact em dash prefix "— ".
 - Fallback: omit pairing section entirely when no pairing is available; no placeholder copy or error styling.
 - Container styling: padding 16px, radius 16px, border rgba(0,0,0,0.06), background #ffffff to #fafafa, no heavy shadow.
 - Micro-interaction: subtle hover/press only (opacity ~0.96 or border to rgba(0,0,0,0.12)); no fill inversion.

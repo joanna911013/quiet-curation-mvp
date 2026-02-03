@@ -27,7 +27,7 @@
 - Verse text: full text, no truncation; preserve line breaks (pre-line or paragraph split).
 - Explanation/rationale blocks remain unchanged in Detail UI:
   - Literature explanation block (if present) titled "About the literature".
-  - Rationale block (if present) titled "Explanations".
+  - Rationale block (if present) titled per `pairing.rationale_heading` (EN "Why this pairing?" / KR "연결고리 설명").
 - Attribution line: shown under rationale (or under verse if no rationale); prefix with "— " and append year if provided.
 - Missing states:
   - Verse missing: show "Verse unavailable right now." + "Pull to refresh or try again." (1-2 lines total).
@@ -51,7 +51,7 @@
 
 ## DEV Implementation Checklist
 - Today: literature block first (full), verse block below (full), CTA ghost button row at bottom; hide rationale.
-- Detail shows full verse text; rationale heading "Why this pairing?" and full rationale text; hide rationale if missing.
+- Detail shows full verse text; rationale heading uses `pairing.rationale_heading` (EN "Why this pairing?" / KR "연결고리 설명") and full rationale text; hide rationale if missing.
 - Add label row handling (fallback + approved-only) per spec.
 - Omit pairing section entirely when no pairing is available (no placeholder text).
 - Apply typography + spacing tokens per spec.

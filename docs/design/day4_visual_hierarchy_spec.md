@@ -17,7 +17,7 @@
 | Verse text (Today) | 17px, weight 500, line-height 1.6 | #111111 | Full text, preserve line breaks |
 | Verse text (Detail) | 17px, weight 400-500, line-height 1.6 | #111111 | Full text, preserve line breaks |
 | Divider line (Detail) | 1px height | rgba(0,0,0,0.08) | Between literature and verse; no card |
-| Explanation/rationale titles | 13px, weight 600, line-height 1.4 | #4b4b4b | Use existing labels ("About the literature", "Explanations") |
+| Explanation/rationale titles | 13px, weight 600, line-height 1.4 | #4b4b4b | Use localized labels ("About the literature", `pairing.rationale_heading`) |
 | Explanation/rationale body | 14px, weight 400, line-height 1.5 | #5c5c5c | Full text (no clamp) |
 | Attribution line | 12px, weight 500, line-height 1.4 | #7a7a7a | Prefix with "— "; show beneath rationale or verse |
 | CTA row (Today) | 14px, weight 600, line-height 1.4 | #374151 | Ghost button; EN “Click to see explanations” / KR “연결고리 보려면 클릭” |
