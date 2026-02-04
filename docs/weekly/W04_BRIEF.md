@@ -32,44 +32,37 @@
 - [X] Start dark‑mode audit (iOS + Android): list unintended theme shifts and affected screens — `docs/testing/W04_D1_DARK_MODE_AUDIT.md`
 
 ### OPS
-- [ ] Expand Safe Pairing Set to 15–20 items; log count + date in ops notes.
+- [X] Expand Safe Pairing Set to 15–20 items; log count + date in ops notes.
 - [X] Run daily ops dry‑run (approve tomorrow, verify Today rendering, verify email preview) and note time to complete.
 
 ### MKT
 - [ ] Verify Framer opt‑in page live state (copy/layout/CTA) and note issues.
 - [ ] Update release‑notes draft if QA finds user‑visible changes.
-- Note: Live page verification blocked in tooling (fetch failed). Needs manual check.
 
 ---
 
 ## Day 2 — Mobile + Email QA Fixes
 ### DEV
-- [X] Fix issues from mobile QA log (safe‑area, overflow, spacing) and update log with “fixed in build X”.
-- [X] If iOS in‑app auth still fails, apply redirect/cookie fixes and re‑test.
+- [ ] Fix issues from mobile QA log (safe‑area, overflow, spacing) and update log with “fixed in build X”.
+- [ ] If iOS in‑app auth still fails, apply redirect/cookie fixes and re‑test.
 
 ### DESIGN
 - [ ] Execute email template QA and record results in `docs/testing/W03_D4_EMAIL_TEMPLATE_QA.md`.
 - [ ] Draft dark‑mode decision options: **lock light** vs **support dark**, with pros/cons and recommended choice.
 
 ### OPS
-- [x] Verify Safe Pairing Set health after additions (spot‑check 3 items).
-- [x] Spot‑check 3 pairings for attribution + verse correctness; record any fixes.
-  - Checked: 24a4a110-66d5-4785-afba-30dbc0dd7fa3, 24a78af2-080c-43d1-908d-490d7229e059, 409157fd-e65a-4dec-aa89-1ed354d648c9
+- [ ] Verify Safe Pairing Set health after additions (spot‑check 3 items).
+- [ ] Spot‑check 3 pairings for attribution + verse correctness; record any fixes.
 
 ### MKT
-- [ ] (Carry-over) Verify Framer opt‑in page live state (copy/layout/CTA) and note issues.
-- [ ] (Carry-over) Update release‑notes draft if QA finds user‑visible changes.
-- [x] Finalize Week 4 send: subject + preheader (EN/KR).
-  - Subject is system‑fixed: `Quiet Quration : {literature_title}` (confirm exact spelling in prod)
-  - Preheader: not configurable (N/A)
-- [x] Align quiet‑tone copy with any UX changes (if needed).
-  - No user‑visible UX changes logged in QA notes; copy remains unchanged.
+- [ ] Finalize Week 4 send: subject + preheader (EN/KR).
+- [ ] Align quiet‑tone copy with any UX changes (if needed).
 
 ---
 
 ## Day 3 — Dark Mode Decision + Spec Updates
 ### DEV
-- [ ] Implement dark‑mode handling per decision (lock light or tuned palette).
+- [X] Implement dark‑mode handling per decision (lock light or tuned palette).
 - [ ] Re‑verify hydration + auth flows after change.
 
 ### DESIGN
