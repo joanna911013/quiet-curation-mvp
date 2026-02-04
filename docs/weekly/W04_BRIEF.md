@@ -72,10 +72,10 @@
   - Updated: PASS (2026-02-04)
 
 ### OPS
-- [ ] Run daily ops routine end‑to‑end and record total time.
+- [X] Run daily ops routine end‑to‑end and record total time.
 
 ### MKT
-- [ ] Draft short “what’s new” note (only if UX changed).
+- [X] Draft short “what’s new” note (only if UX changed).
 
 ---
 
