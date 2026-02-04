@@ -1,5 +1,5 @@
 # Design Specs Index (Canonical Sources)
-Last updated: 2026-01-30
+Last updated: 2026-02-04
 
 Use this index to avoid duplication and keep a single source of truth.
 
@@ -11,7 +11,7 @@ Use this index to avoid duplication and keep a single source of truth.
 ## Mobile + Emotion
 - Mobile polish + safe-area rules: `docs/design/day5_mobile_polish_spec.md`
 - Emotion UI polish: `docs/design/day5_emotion_ui_polish.md`
-- Dark mode spec (draft): `docs/design/dark_mode_spec.md`
+- Dark mode spec (decision locked): `docs/design/dark_mode_spec.md`
 
 ## Fallback + Admin
 - Fallback UI + admin warning styling: `docs/design/day3_fallback_admin_ui_spec.md`

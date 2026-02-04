@@ -1,5 +1,5 @@
-`# Dark Mode Spec (Draft v1)
-Last updated: 2026-02-02
+# Dark Mode Spec (v1 — Decision Locked)
+Last updated: 2026-02-04
 
 Purpose: Fix dark-mode readability issues found in wireframes (`*_dark.png`) while keeping the “quiet” vibe.
 
@@ -9,14 +9,12 @@ Purpose: Fix dark-mode readability issues found in wireframes (`*_dark.png`) whi
 - Ghost buttons + dividers are nearly invisible.
 - Nav links and meta text lack contrast.
 
-## 2) Decision (choose one)
-**Option A — Support tuned dark palette (recommended for mobile)**  
-Use a controlled dark palette with clear hierarchy and soft contrast.
+## 2) Decision (locked)
+**Chosen: Option A — Support tuned dark palette (mobile‑first)**  
+Rationale: iOS/Android in‑app browsers can flip to dark; a tuned palette prevents illegible text and invisible dividers without breaking the quiet vibe.
 
-**Option B — Lock light theme only**  
-Set `color-scheme: light;` and disable dark mode to keep a single visual system.
-
-This spec describes Option A. If Option B is chosen, apply the “lock light” note in §6.
+**Option B — Lock light theme only (fallback)**  
+Set `color-scheme: light;` and disable dark mode if QA finds critical issues.
 
 ---
 
@@ -101,7 +99,11 @@ Add a global override:
 
 ---
 
-## 7) QA Checklist (Dark Mode)
+## 7) QA Notes (W04)
+- Audit initiated in `docs/testing/W04_D1_DARK_MODE_AUDIT.md`.
+- Log device/browser results there; update this section once audit is complete.
+
+## 8) QA Checklist (Dark Mode)
 - All primary text readable (no “near‑black on dark”).
 - Ghost buttons and divider lines visible.
 - No white cards unless explicitly intended.

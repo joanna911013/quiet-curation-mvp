@@ -63,11 +63,13 @@
 ## Day 3 — Dark Mode Decision + Spec Updates
 ### DEV
 - [X] Implement dark‑mode handling per decision (lock light or tuned palette).
-- [ ] Re‑verify hydration + auth flows after change.
+- [X] Re‑verify hydration + auth flows after change.
 
 ### DESIGN
-- [ ] Update design specs with dark‑mode decision + QA notes (add to `docs/design/specs_index.md` references if needed).
-- [ ] Re‑run quiet‑vibe checklist; note PASS/FAIL in `docs/design/day4_visual_hierarchy_spec.md` if changed.
+- [X] Update design specs with dark‑mode decision + QA notes (add to `docs/design/specs_index.md` references if needed).
+  - Updated: `docs/design/dark_mode_spec.md`, `docs/design/specs_index.md`
+- [X] Re‑run quiet‑vibe checklist; note PASS/FAIL in `docs/design/day4_visual_hierarchy_spec.md` if changed.
+  - Updated: PASS (2026-02-04)
 
 ### OPS
 - [ ] Run daily ops routine end‑to‑end and record total time.

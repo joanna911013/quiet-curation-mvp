@@ -58,7 +58,7 @@ Spacing tokens
 - No bold CTA inside pairing block beyond normal tap affordance.
 - Typography stays within defined weights and sizes.
 - Borders and backgrounds remain neutral (#ffffff to #fafafa).
-- Review status: PASS (2026-01-30).
+- Review status: PASS (2026-02-04). Dark‑mode decision does not alter light‑mode hierarchy.
 
 ## Micro-Interaction Guidance
 - Tap affordance: entire verse block clickable.
