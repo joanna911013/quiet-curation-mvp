@@ -75,14 +75,14 @@
 - [X] Run daily ops routine end‑to‑end and record total time.
 
 ### MKT
-- [X] Draft short “what’s new” note (only if UX changed).
+- [ ] Draft short “what’s new” note (only if UX changed).
 
 ---
 
 ## Day 4 — Regression + Sign‑off
 ### DEV
-- [ ] Regression sweep (login, Today, Detail, Saved, Emotion); update `docs/testing/W03_D4_E2E_QA_EXECUTION_NOTES.md`.
-- [ ] Validate email deep‑link → login → detail on Vercel URL.
+- [X] Regression sweep (login, Today, Detail, Saved, Emotion); update `docs/testing/W03_D4_E2E_QA_EXECUTION_NOTES.md`.
+- [X] Validate email deep‑link → login → detail on Vercel URL.
 
 ### DESIGN
 - [ ] Sign‑off on mobile polish + dark‑mode adjustments; update QA logs as PASS.

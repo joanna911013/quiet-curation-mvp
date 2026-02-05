@@ -66,3 +66,32 @@ Flow: simulate API fail → stable error + retry works
 - Result: PASS
 - Evidence:
 - Notes:
+
+---
+
+## Day 4 Regression Sweep (Vercel)
+Focus: login → Today → Detail → Saved → Emotion
+
+**Tester:** Yoanna  
+**Build URL:** https://quiet-curation-web.vercel.app  
+**Date (KST):** 2026-02-05  
+
+1) Login flow
+- Result: PASS
+- Notes: Vercel login succeeds.
+
+2) Today page renders
+- Result: PASS
+- Notes: Today loads without blank state.
+
+3) Detail page renders (from Today)
+- Result: PASS
+- Notes: Detail loads from Today link.
+
+4) Saved list (save + view)
+- Result: PASS
+- Notes: Save + Saved list display works.
+
+5) Emotion page (log + confirm)
+- Result: PASS
+- Notes: Emotion log succeeds; confirmation shown.
