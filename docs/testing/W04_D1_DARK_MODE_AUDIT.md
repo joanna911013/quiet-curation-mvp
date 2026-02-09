@@ -1,43 +1,43 @@
 # W04 D1 — Dark Mode Audit (iOS + Android)
-Last updated: 2026-02-02
+Last updated: 2026-02-06
 
 Goal: identify unintended theme shifts in mobile dark mode and decide whether to lock light theme or support a tuned dark palette.
 
 ## Tester
-- Name:
-- Date (KST):
-- Build URL:
-- Environment: (local / vercel)
+- Name: Yoanna
+- Date (KST): 2026-02-05
+- Build URL: https://quiet-curation-web.vercel.app
+- Environment: vercel
 
 ---
 
 ## Devices / Browsers
-- iOS Safari:
-- iOS in‑app browser (Gmail/Instagram/Kakao):
-- Android Chrome:
+- iOS Safari: PASS
+- iOS in‑app browser (Gmail/Instagram/Kakao): PASS
+- Android Chrome: PASS
 
 ---
 
 ## Screens to Audit (Pass/Fail + Notes)
 1) Login
-- Result:
-- Notes:
+- Result: PASS
+- Notes: Text, inputs, and CTA remain legible.
 
 2) Today
-- Result:
-- Notes:
+- Result: PASS
+- Notes: Cards and dividers visible; no unintended dark flip.
 
 3) Detail
-- Result:
-- Notes:
+- Result: PASS
+- Notes: Verse/rationale readable; divider visible.
 
 4) Saved
-- Result:
-- Notes:
+- Result: PASS
+- Notes: List rows readable; meta text visible.
 
 5) Emotion
-- Result:
-- Notes:
+- Result: PASS
+- Notes: Chips and helper text readable; no harsh contrast.
 
 ---
 
@@ -52,15 +52,15 @@ Goal: identify unintended theme shifts in mobile dark mode and decide whether to
 ---
 
 ## Recommendation
-- [ ] Lock light theme (disable dark mode)
+- [x] Lock light theme (disable dark mode)
 - [ ] Support tuned dark palette
 
 **Notes / Rationale:**
+- Lock light chosen; dark mode displays light UI consistently.
 
 ---
 
 ## Follow‑ups
-- Design spec updates needed:
-- DEV changes needed:
-- QA re‑run required:
-
+- Design spec updates needed: none (spec already updated).
+- DEV changes needed: none.
+- QA re‑run required: no.

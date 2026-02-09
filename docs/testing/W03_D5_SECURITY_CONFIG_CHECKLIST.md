@@ -30,7 +30,7 @@ Scope: quiet-curation-web (Next.js + Supabase + Resend)
 ## 4) Auth/session handling
 - [x] SSR uses cookie-based auth via `@supabase/ssr`.
 - [x] No refresh-token reuse found in repo scan.
-- [ ] Verify iOS webview preserves auth cookies (manual QA).
+- [x] Verify iOS webview preserves auth cookies (manual QA; in-app retest PASS 2026-02-03).
 
 ## 5) API routes & cron
 - [x] `/api/cron/quiet-invite` requires `Authorization: Bearer <CRON_SECRET>`.

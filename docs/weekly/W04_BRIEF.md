@@ -81,101 +81,114 @@
 
 ## Day 4 — Regression + Sign‑off
 ### DEV
-- [X] Regression sweep (login, Today, Detail, Saved, Emotion); update `docs/testing/W03_D4_E2E_QA_EXECUTION_NOTES.md`.
-- [X] Validate email deep‑link → login → detail on Vercel URL.
+- [X] Regression sweep + deep‑link validated (see `docs/testing/W03_D4_E2E_QA_EXECUTION_NOTES.md`).
 
 ### DESIGN
-- [ ] Sign‑off on mobile polish + dark‑mode adjustments; update QA logs as PASS.
+- [X] Sign‑off on mobile polish + dark‑mode adjustments; update QA logs as PASS.
 
 ### OPS
-- [ ] Confirm next 3–5 days of pairings ready (approved + attribution ok).
+- [X] Confirm next 3–5 days of pairings ready (approved + attribution ok).
 
 ### MKT
 - [ ] Final review of opt‑in page + email copy; confirm send timing.
+  - If blocked, carry over to Day 5.
 
 ---
 
 ## Day 5 — Release Readiness Wrap‑up
 ### DEV
-- [ ] Final config check (prod envs, Supabase URLs, cron secret) and update security checklist.
-- [ ] Record remaining carry‑overs into weekly notes.
+- [X] Final config check (prod envs, Supabase URLs, cron secret) and update security checklist (only if not already logged).
+- [X] Record any remaining carry‑overs into weekly notes (skip if none).
+  - None identified on 2026-02-06.
 
 ### DESIGN
-- [ ] Mark mobile QA + dark‑mode QA as complete in the logs.
+- [X] Mark mobile QA + dark‑mode QA as complete in the logs (if not already marked PASS).
 
 ### OPS
 - [ ] Confirm Daily Ops Routine v1 stable (2 consecutive runs logged).
 
 ### MKT
 - [ ] Approve final release note wording + launch timing.
+- [ ] If Day 4 MKT review is still pending, complete it here.
 
 ---
 
-# Week 5–Week 8 (High-level Plan, clarified)
+# Week 5–Week 8 (Detailed Plan, iOS Wrapper Focus)
+Decision: iOS wrapper (Capacitor) is the primary track; Android wrapper is optional later.
 
-
-## Week 5 — Post‑v1 Iteration + Newsletter Track
-**Outcome:** Newsletter infrastructure + first content spec ready.
+## Week 5 — iOS Wrapper Kickoff + Newsletter (Secondary)
+**Outcome:** iOS wrapper boots, deep links work in TestFlight, newsletter spec drafted.
 
 **DEV**
-- Define newsletter data model + send pipeline (separate from daily invite).
+- Initialize Capacitor wrapper and iOS project (bundle id, app icon placeholders, build).
+- Universal Links: configure associated domains + deep link routing (`/c/[id]`).
+- Auth in wrapper: magic‑link → app → login → redirect to deep link.
+- TestFlight internal build + basic install checklist.
+- Newsletter: define data model + send pipeline (separate from daily invite).
 - Add basic analytics events (open detail, save, emotion logged).
 
 **DESIGN**
+- iOS wrapper audit: status bar, safe areas, default fonts, in‑app browser fallback.
 - Newsletter content card spec + email layout constraints.
 
 **OPS**
 - Inventory discipline: tomorrow + safe set always ready.
+- Add iOS wrapper QA checklist to ops routine (install → login → Today → Detail).
 
 **MKT**
+- Update opt‑in copy to mention iOS TestFlight (if applicable).
 - Newsletter onboarding copy (why it’s different, cadence, examples).
 
-## Week 6 — v2 “For You” Light Personalization
-**Outcome:** Small personalization module with guardrails.
+## Week 6 — iOS Wrapper MVP + QA
+**Outcome:** Wrapper stable on iOS; deep links + auth reliable; QA log complete.
 
 **DEV**
-- Implement 2–3 “For you” recommendations (emotion‑based rerank).
-- Add caching + guardrails (never blank day, never break send).
+- Fix iOS wrapper issues from QA (auth edge cases, deep‑link fallbacks).
+- Add offline‑safe empty states + retry behavior.
+- Add app‑specific config toggles (web vs app) if needed.
 
 **DESIGN**
-- “For you” module design (quiet, secondary, no feed vibe).
+- iOS UI tweaks (spacing, tap targets, safe‑area padding).
+- Confirm wrapper‑specific empty/error states are calm.
 
 **OPS**
-- Define quality/safety acceptance checks for “For you.”
+- Run iOS wrapper QA on 2 devices; log pass/fail.
 
 **MKT**
-- Messaging for v2: “2–3 quiet suggestions, based on what you felt.”
+- Draft iOS TestFlight invite copy + troubleshooting FAQ.
 
-## Week 7 — Mobile Packaging Track (Optional)
-**Outcome:** Capacitor prototype ready for review.
+## Week 7 — Store Prep (iOS Primary, Android Optional)
+**Outcome:** App Store submission package ready; Android decision made.
 
 **DEV**
-- Capacitor wrapper with auth + deep‑link routing + offline basics.
-- Add Universal Links (iOS) / App Links (Android) so email magic‑links open the app directly (avoid in‑app browser auth failures).
-- Decide push strategy (web push vs native later).
+- Finalize iOS signing, versioning, and App Store metadata fields.
+- Add App Links on Android only if Android wrapper is approved.
+- Decide push strategy (none vs later) and document.
 
 **DESIGN**
 - Store listing basics (icon + 3–5 screenshots + short copy).
+- Finalize splash + app icon assets.
 
 **OPS**
-- Operational readiness for dual distribution (web + wrapper).
+- Operational readiness for dual distribution (web + iOS app).
 
 **MKT**
-- Pre‑launch narrative draft for mobile packaging.
+- Pre‑launch narrative draft for iOS wrapper.
 
-## Week 8 — v2 Stabilization + Store Submission (if wrapper ships)
-**Outcome:** Store submission and stabilization complete.
+## Week 8 — Submission + Stabilization
+**Outcome:** App submitted, stabilization in place, v2 roadmap re‑prioritized.
 
 **DEV**
-- Bug bash + performance pass + final security/RLS audit.
-- Submit iOS/Android builds; track review feedback.
+- Bug bash + performance pass + final security/RLS audit (app + web).
+- Submit iOS build; track review feedback and fixes.
+- (Optional) Android submission if approved in Week 7.
 
 **DESIGN**
-- Final screenshot set + microcopy sweep.
+- Final screenshot set + microcopy sweep (store + in‑app).
 
 **OPS**
 - Runbook updates for store + web operations.
 
 **MKT**
-- Launch sequence: v2 announcement + newsletter cadence alignment.
+- Launch sequence: iOS availability + newsletter cadence alignment.
 ```
