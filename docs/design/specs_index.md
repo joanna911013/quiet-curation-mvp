@@ -1,5 +1,5 @@
 # Design Specs Index (Canonical Sources)
-Last updated: 2026-02-04
+Last updated: 2026-02-09
 
 Use this index to avoid duplication and keep a single source of truth.
 
@@ -19,3 +19,6 @@ Use this index to avoid duplication and keep a single source of truth.
 ## Wireframes
 - Pairing hierarchy notes: `docs/design/wireframes/day4_pairing_hierarchy_annotations.md`
 - Mobile polish annotations: `docs/design/wireframes/day5_mobile_polish_annotations.md`
+
+## Marketing
+- Landing lock (Week 5): `docs/design/landing_lock.md`
