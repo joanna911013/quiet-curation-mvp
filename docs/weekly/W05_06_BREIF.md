@@ -36,36 +36,36 @@ Repo: `quiet-curation-web`
 
 ## Day 1 — Lock Story + Build the Marketing Narrative (No UI polish yet)
 **DESIGN**
-- Lock the landing story arc (one page doc):
+- Lock the landing story arc (one page doc): O
   1) The problem (screen loop / attention rental)
   2) The promise (3-minute morning reset)
   3) The mechanism (what arrives, how often, how long)
   4) The proof (sample / principles)
   5) The path (subscribe)
-- Define a landing-only visual system:
+- Define a landing-only visual system: O
   - Typography: 2–3 sizes for hero + body, stronger hierarchy than app
   - Color/contrast rules (what “strong but calm” means)
   - Signature motif concept (choose 1): gradient field, screen timeline, subtle motion line, etc.
-- Choose Hero direction (1 of 3):
+- Choose Hero direction (1 of 3): O
   - “3 quiet minutes” value-first
   - “Before the first scroll” ritual-first
   - “Screen loop” problem-first
-- Draft section headlines + subcopy (v0) for all core sections.
+- Draft section headlines + subcopy (v0) for all core sections. O
 
 **MKT**
-- Tighten target persona statement for Week 5 distribution.
-- Prepare a “promise” statement (1 sentence) for reuse in posts + OG description.
-- Finalize the conversion-critical FAQs (5–6) and the “for/not for” bullets.
+- Tighten target persona statement for Week 5 distribution. O
+- Prepare a “promise” statement (1 sentence) for reuse in posts + OG description. O
+- Finalize the conversion-critical FAQs (5–6) and the “for/not for” bullets. O
 
 **DEV (minimal)**
-- Add placeholders/slots for the new sections (no styling perfection required):
+- Add placeholders/slots for the new sections (no styling perfection required): O
   - Insights section
   - Principles section
   - For/Not-for section
-- Add optional anchors (e.g., `#how`, `#sample`, `#faq`) for internal navigation.
+- Add optional anchors (e.g., `#how`, `#sample`, `#faq`) for internal navigation. O
 
 **OPS**
-- Confirm the “operational truth” to avoid overpromising:
+- Confirm the “operational truth” to avoid overpromising: O (3분 운영 확인됨)
   - send frequency, unsubscribe reality, what counts as “3 minutes”.
 
 **Deliverable**
@@ -308,4 +308,3 @@ Repo: `quiet-curation-web`
 - Supabase subscriber table + internal subscribe submission
 - Automated welcome emails, segmentation, lifecycle messaging
 - iOS app work (defer until delivery loop is proven)
-
