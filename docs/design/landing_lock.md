@@ -63,6 +63,24 @@ Recommended (prefer):
 - FAQ: "Common questions." / "Short answers to remove doubt."
 - Final CTA: "Step out of the loop, quietly." / "One calm pairing each morning."
 
+## Day 2 Design Lock (Hero + Grid + CTA)
+Hero block (finished area):
+- Headline + sub + microcopy (see Hero Copy Lock)
+- Primary CTA to `/subscribe`
+- Secondary link to `#sample`
+- Signature motif: “screen-loop card” (soft elevation + subtle motion)
+- Mobile fold: CTA visible without scrolling
+
+Landing grid + spacing rhythm:
+- Max width: 5xl (marketing container)
+- Hero grid: `1.1fr / 0.9fr` on desktop, stacked on mobile
+- Section spacing: ~`gap-20` (between sections)
+- Section headers: small label (uppercase) + H2 + 1-line sub
+
+CTA styles:
+- Primary: filled, rounded (min height 44px), Material surface tone
+- Secondary: text link, underline, muted color
+
 ## MKT Locks
 Target persona:
 - Overstimulated knowledge workers who start and end their day on their phone, and want a small, quiet ritual without a feed.

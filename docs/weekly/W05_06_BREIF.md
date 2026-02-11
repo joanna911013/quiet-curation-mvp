@@ -75,13 +75,13 @@ Repo: `quiet-curation-web`
 
 ## Day 2 — Start Concrete Design: Hero + Above-the-Fold Conversion
 **DESIGN**
-- Design and implement (in UI) the **Hero block** as the first “finished” area:
+- Design and implement (in UI) the **Hero block** as the first “finished” area: O
   - Headline + subheadline + microcopy
   - Primary CTA to `/subscribe`
   - Secondary link to sample or “see how it works”
   - One signature motif integrated (strong but calm)
-- Establish landing grid + spacing rhythm (marketing layout rules).
-- Define 2 CTA styles:
+- Establish landing grid + spacing rhythm (marketing layout rules). O
+- Define 2 CTA styles: O
   - Primary (solid)
   - Secondary (quiet link/button)
 
