@@ -91,9 +91,9 @@ Repo: `quiet-curation-web`
 - Write a 2-line credibility promise near CTA (unsubscribe/no spam/privacy).
 
 **DEV**
-- Implement hero styling + responsive behavior (phone/tablet/desktop).
-- Ensure fold behavior: CTA visible on common mobile heights.
-- Add basic click tracking hooks (optional):
+- Implement hero styling + responsive behavior (phone/tablet/desktop). O
+- Ensure fold behavior: CTA visible on common mobile heights. O
+- Add basic click tracking hooks (optional): O
   - `lp_cta_subscribe_click`, `lp_cta_secondary_click`
 
 **OPS**
