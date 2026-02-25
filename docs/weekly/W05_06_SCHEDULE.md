@@ -30,7 +30,7 @@ Repos: `quiet-curation-web`, `quiet-curation-mvp`
   - `docs/testing/W05_D1_RELEASE_QA_GATE_LOG.md` updated (2026-02-25 run).
 
 ### Remaining (blocking MVP finish)
-- [ ] Release gate still has open FAIL/BLOCKED items (magic-link/login env block, mobile QA).
+- [ ] Release gate still has open FAIL/BLOCKED items (admin partial checks).
 - [ ] Internationalization is partial (many app strings still EN-first).
 - [ ] Final launch docs need one more pass after remaining QA blockers are closed.
 
@@ -155,8 +155,11 @@ MVP is considered finish-ready only when all below are true:
 - [x] Re-run full QA gate log after `/search-check` fix.
 - [x] Execute admin runtime QA for approve + set-today timing (`<= 3 minutes`).
 - [x] Execute logout runtime QA (`/profile` logout -> `/login`).
-- [ ] Complete remaining manual QA:
-  - magic-link callback, mobile viewport checks.
+- [x] Complete remaining manual QA:
+  - magic-link callback E2E -> PASS (`/auth/callback` token_hash flow redirected to detail; authenticated profile verified).
+  - mobile viewport checks -> PASS (re-run: Today compact card `92px`, 4/4 checks PASS).
+- [x] Apply DB-level memo guard in Supabase (`scripts/sql/emotion_events_memo_length_guard.sql`) and re-run emotion constraint check (`170` chars -> blocked with `23514`).
+- [x] Fix Today mobile card compact spec (2-line clamp, `80-96px`) and re-run mobile QA.
 
 ## Notes
 - This schedule replaces narrative-heavy planning with finish-oriented execution.

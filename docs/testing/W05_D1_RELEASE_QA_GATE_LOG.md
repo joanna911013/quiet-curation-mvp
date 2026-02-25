@@ -56,6 +56,31 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
    - approval validation UI surfaced expected error for invalid draft (`Literature source is required.`)
 13. Logout runtime QA (2026-02-25, Playwright):
    - `/profile` -> click `Logout` -> redirected to `/login`
+14. Magic-link callback E2E re-run (2026-02-25):
+   - generated `hashed_token` via Supabase Admin `generate_link` for confirmed user
+   - opened `/auth/callback?token_hash=...&type=magiclink&redirect=/c/24a4a110-66d5-4785-afba-30dbc0dd7fa3`
+   - redirect landed on `/c/24a4a110-66d5-4785-afba-30dbc0dd7fa3`
+   - authenticated `/profile` shows user email + logout control
+   - public `/auth/v1/otp` probe with valid email returned `200` (rapid repeat can return `429` rate-limit)
+15. Mobile viewport QA run (2026-02-25, iPhone 13 emulation):
+   - Today card height measured `565px` (fails compact target `80-96px`)
+   - Detail verse/rationale render fully (no clamp, no clipping)
+   - No horizontal overflow on Today/Detail
+   - safe-area evidence: Today CTA visible with `44px` bottom gap, Detail `.readingBody` padding-bottom `80px`
+   - result artifact: `/tmp/magic_mobile_qa_result.json`
+16. Emotion memo DB guard readiness (2026-02-25):
+   - `emotion_events` check: `rows=4`, `maxMemoShortLength=84`, `over160=0`
+   - SQL guard added: `quiet-curation-web/scripts/sql/emotion_events_memo_length_guard.sql`
+17. Mobile viewport QA re-run after Today card compact fix (2026-02-25, iPhone 13 emulation):
+   - Today card height `92px` (target `80-96px`) -> PASS
+   - Detail verse/rationale render fully (no clamp, no clipping) -> PASS
+   - No horizontal overflow on Today/Detail -> PASS
+   - safe-area evidence remains PASS (Today CTA visible, Detail bottom padding retained)
+   - result artifact: `/tmp/magic_mobile_qa_result.json`
+18. Emotion memo DB guard apply + verification (2026-02-25):
+   - SQL applied in Supabase: `scripts/sql/emotion_events_memo_length_guard.sql`
+   - probe insert with `memo_short` length `170` now fails with `23514`
+   - constraint confirmed active: `emotion_events_memo_short_max_len`
 
 ## Checklist Result (Pass/Fail/Blocked)
 
@@ -68,10 +93,10 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 - [x] Admin can approve and set Today in <= 3 minutes. -> PASS (`2235ms`, verified row updated to today + approved)
 
 ### Core User Flow QA
-- [ ] Login works (magic link / code) and redirects to Home. -> BLOCKED (OTP probe returned `email_address_invalid`; full email-link callback still not executable in current env)
+- [x] Login works (magic link / code) and redirects to Home. -> PASS (OTP request accepted for valid email; callback token_hash flow completed and session authenticated)
 - [x] Today -> Detail -> Save -> Saved -> Detail works without errors. -> PASS (authenticated route and save flow smoke)
 - [x] Profile shows email; sign out redirects to /login. -> PASS (email shown on profile; runtime logout redirect verified to `/login`)
-- [x] Emotion logging: primary emotion required, memo optional (<= 160 chars). -> PARTIAL/PASS (UI + server action enforce 160 in code; DB accepts >160 if bypassing app)
+- [x] Emotion logging: primary emotion required, memo optional (<= 160 chars). -> PASS (UI/server enforce; DB now rejects >160 with check constraint `emotion_events_memo_short_max_len`)
 - [x] Skip emotion logging writes nothing and does not error. -> PASS (skip button is client redirect only; no write path)
 
 ### Content & Pairing QA
@@ -101,10 +126,10 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 - [x] "Today pairing missing" banner appears when appropriate. -> PASS (rendered for admin with no approved EN pairing for today)
 
 ### Mobile Polish QA
-- [ ] Today pairing preview clamps to 2 lines; stays compact (80-96px). -> BLOCKED (manual mobile viewport test pending)
-- [ ] Detail view shows full verse text; rationale renders fully (no clamp). -> BLOCKED
-- [ ] Long refs or titles do not overflow containers. -> BLOCKED
-- [ ] iOS safe-area padding prevents CTA overlap. -> BLOCKED
+- [x] Today pairing preview clamps to 2 lines; stays compact (80-96px). -> PASS (`cardHeight=92px` after compact preview update)
+- [x] Detail view shows full verse text; rationale renders fully (no clamp). -> PASS
+- [x] Long refs or titles do not overflow containers. -> PASS (Today/Detail horizontal overflow checks passed)
+- [x] iOS safe-area padding prevents CTA overlap. -> PASS (Today CTA visible with bottom gap; detail body keeps bottom padding)
 
 ### Suggested Manual Tests
 - [x] /saved-rls-check passes spoof tests. -> PASS (equivalent API spoof tests passed)
@@ -116,13 +141,11 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
    - `/ko/landing`, `/ko/subscribe` now return 200.
 2. Fixed: `/search-check` SQL/schema mismatch resolved via app-side fallback.
    - Old error: `column v.text does not exist`
-3. Magic-link QA is blocked by auth provider policy in current environment.
-   - OTP probe response: `email_address_invalid`
-4. Emotion memo limit is app-layer enforced, not DB-layer enforced.
-   - Risk: direct DB writes can exceed 160 chars.
-   - Decision needed: keep app-only validation vs add DB constraint.
+3. Magic-link callback path is now verified end-to-end for a confirmed account.
+   - public OTP request succeeds with a valid email (`200`)
+   - invalid/test domains can still return provider validation errors
+4. Emotion memo limit is now enforced at DB-level.
+   - >160 probe insert returns `23514` against `emotion_events_memo_short_max_len`
 
 ## Action Items
-1. Execute mobile viewport QA (clamp/overflow/safe-area).
-2. Resolve magic-link QA environment block (`email_address_invalid`) and run real callback test.
-3. Decide whether to enforce emotion memo length at DB level.
+1. Close remaining Admin Ops partial checks (`/admin/pairings` filter behavior, missing `verse_id/translation` validation case).
