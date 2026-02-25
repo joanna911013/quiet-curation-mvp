@@ -1,5 +1,6 @@
 # W05 Day1 Release QA Gate Log
 Date: 2026-02-23
+Last updated: 2026-02-24
 Owner: Yoanna + Codex
 Target repo: `quiet-curation-web`
 Environment: local `next start` (`http://localhost:3210`) with `.env.local`
@@ -38,10 +39,12 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 8. Check routes with authenticated user:
    - `/pairings-check` -> approved-only rows visible, no error
    - `/verse-check` -> verse row visible, no error
-   - `/search-check` -> FAIL (`column v.text does not exist`)
+   - `/search-check` -> FAIL in run 1 (`column v.text does not exist`)
 9. Admin gating checks:
    - non-admin authenticated user: `/admin`, `/admin/pairings` show `Not authorized`
    - temporary admin user: `/admin` rendered and showed `Today pairing missing` warning; `/admin/pairings` rendered dashboard
+10. Targeted re-test (2026-02-24):
+   - `/search-check` -> PASS after `searchVerses` fallback fix (no `column v.text does not exist` error)
 
 ## Checklist Result (Pass/Fail/Blocked)
 
@@ -95,20 +98,18 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 ### Suggested Manual Tests
 - [x] /saved-rls-check passes spoof tests. -> PASS (equivalent API spoof tests passed)
 - [x] /pairings-check returns only approved rows. -> PASS
-- [ ] /search-check returns expected verse results. -> FAIL (`column v.text does not exist`)
+- [x] /search-check returns expected verse results. -> PASS (targeted re-test on 2026-02-24)
 
 ## New Findings (Blocking / Follow-up)
 1. Fixed: localized marketing route mismatch is resolved.
    - `/ko/landing`, `/ko/subscribe` now return 200.
-2. Open bug: `/search-check` fails due SQL/schema mismatch.
-   - Error: `column v.text does not exist`
-   - Owner: DEV
+2. Fixed: `/search-check` SQL/schema mismatch resolved via app-side fallback.
+   - Old error: `column v.text does not exist`
 3. Emotion memo limit is app-layer enforced, not DB-layer enforced.
    - Risk: direct DB writes can exceed 160 chars.
    - Decision needed: keep app-only validation vs add DB constraint.
 
 ## Action Items
-1. Fix `searchVerses` query (`/search-check` failure) and re-run QA gate.
+1. Re-run full QA gate checklist after `/search-check` fix and update all PASS/FAIL states.
 2. Execute admin action runtime checks (approve/set today) and record timing (`<= 3 min`).
 3. Execute sign-out redirect QA and mobile viewport QA.
-4. Re-run this checklist and convert PARTIAL/BLOCKED items to PASS/FAIL.
