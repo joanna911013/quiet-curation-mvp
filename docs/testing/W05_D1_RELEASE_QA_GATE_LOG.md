@@ -1,6 +1,6 @@
 # W05 Day1 Release QA Gate Log
 Date: 2026-02-23
-Last updated: 2026-02-24
+Last updated: 2026-02-25
 Owner: Yoanna + Codex
 Target repo: `quiet-curation-web`
 Environment: local `next start` (`http://localhost:3210`) with `.env.local`
@@ -45,6 +45,17 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
    - temporary admin user: `/admin` rendered and showed `Today pairing missing` warning; `/admin/pairings` rendered dashboard
 10. Targeted re-test (2026-02-24):
    - `/search-check` -> PASS after `searchVerses` fallback fix (no `column v.text does not exist` error)
+11. Full rerun (2026-02-25):
+   - lint/build re-run -> PASS
+   - unauth and auth smoke routes re-run -> PASS
+   - `/search-check` -> 200 and no legacy SQL error
+   - save/unsave + RLS spoof + cron dedupe + admin/non-admin gating re-run -> PASS
+12. Admin runtime UI QA (2026-02-25, Playwright):
+   - approve + set-today on `/admin/pairings/[id]` completed in `2235ms` (`0.04 min`) -> within 3 minutes
+   - DB verification after action: `status=approved`, `pairing_date=today`
+   - approval validation UI surfaced expected error for invalid draft (`Literature source is required.`)
+13. Logout runtime QA (2026-02-25, Playwright):
+   - `/profile` -> click `Logout` -> redirected to `/login`
 
 ## Checklist Result (Pass/Fail/Blocked)
 
@@ -54,12 +65,12 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 - [x] No blank day: Safe Pairing Set fallback verified. -> PASS (cron runs succeeded while no approved `today` row exists)
 - [x] Quiet invite cron dry-run passes with dedupe (1 send per user per day). -> PASS (`inserted 0 / skipped 2` on repeated run)
 - [x] Save/Unsave works after Today join changes. -> PASS (insert 201, `/saved` render, delete 204)
-- [ ] Admin can approve and set Today in <= 3 minutes. -> BLOCKED (interactive action timing not executed)
+- [x] Admin can approve and set Today in <= 3 minutes. -> PASS (`2235ms`, verified row updated to today + approved)
 
 ### Core User Flow QA
-- [ ] Login works (magic link / code) and redirects to Home. -> BLOCKED (full email-link callback flow not executed end-to-end)
+- [ ] Login works (magic link / code) and redirects to Home. -> BLOCKED (OTP probe returned `email_address_invalid`; full email-link callback still not executable in current env)
 - [x] Today -> Detail -> Save -> Saved -> Detail works without errors. -> PASS (authenticated route and save flow smoke)
-- [ ] Profile shows email; sign out redirects to /login. -> PARTIAL (email verified, sign-out redirect action not executed)
+- [x] Profile shows email; sign out redirects to /login. -> PASS (email shown on profile; runtime logout redirect verified to `/login`)
 - [x] Emotion logging: primary emotion required, memo optional (<= 160 chars). -> PARTIAL/PASS (UI + server action enforce 160 in code; DB accepts >160 if bypassing app)
 - [x] Skip emotion logging writes nothing and does not error. -> PASS (skip button is client redirect only; no write path)
 
@@ -84,8 +95,8 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 - [x] If no approved pairing, fallback uses FALLBACK_CURATION_ID. -> PASS (inference: no approved today row, cron still processes recipients via fallback path)
 
 ### Admin Ops QA
-- [ ] /admin/pairings lists, filters, and approves correctly. -> PARTIAL (list/filter page renders; approve action not executed)
-- [ ] Approval validation blocks missing verse_id or translation. -> PARTIAL (validation exists in `app/(app)/admin/actions.ts`; runtime action test pending)
+- [ ] /admin/pairings lists, filters, and approves correctly. -> PARTIAL (list/filter render + approve runtime verified; filter behavior not fully exercised)
+- [ ] Approval validation blocks missing verse_id or translation. -> PARTIAL (runtime validation path confirmed; specific missing verse_id/translation case not run)
 - [x] Uniqueness: only one approved pairing per (pairing_date, locale). -> PASS (DB unique constraint `pairings_date_locale_unique` confirmed)
 - [x] "Today pairing missing" banner appears when appropriate. -> PASS (rendered for admin with no approved EN pairing for today)
 
@@ -98,18 +109,20 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 ### Suggested Manual Tests
 - [x] /saved-rls-check passes spoof tests. -> PASS (equivalent API spoof tests passed)
 - [x] /pairings-check returns only approved rows. -> PASS
-- [x] /search-check returns expected verse results. -> PASS (targeted re-test on 2026-02-24)
+- [x] /search-check returns expected verse results. -> PASS (targeted re-test on 2026-02-24 + full rerun on 2026-02-25)
 
 ## New Findings (Blocking / Follow-up)
 1. Fixed: localized marketing route mismatch is resolved.
    - `/ko/landing`, `/ko/subscribe` now return 200.
 2. Fixed: `/search-check` SQL/schema mismatch resolved via app-side fallback.
    - Old error: `column v.text does not exist`
-3. Emotion memo limit is app-layer enforced, not DB-layer enforced.
+3. Magic-link QA is blocked by auth provider policy in current environment.
+   - OTP probe response: `email_address_invalid`
+4. Emotion memo limit is app-layer enforced, not DB-layer enforced.
    - Risk: direct DB writes can exceed 160 chars.
    - Decision needed: keep app-only validation vs add DB constraint.
 
 ## Action Items
-1. Re-run full QA gate checklist after `/search-check` fix and update all PASS/FAIL states.
-2. Execute admin action runtime checks (approve/set today) and record timing (`<= 3 min`).
-3. Execute sign-out redirect QA and mobile viewport QA.
+1. Execute mobile viewport QA (clamp/overflow/safe-area).
+2. Resolve magic-link QA environment block (`email_address_invalid`) and run real callback test.
+3. Decide whether to enforce emotion memo length at DB level.

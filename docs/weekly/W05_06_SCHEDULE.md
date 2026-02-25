@@ -1,13 +1,13 @@
 # Quiet Curation - MVP Finish Schedule (Week 5-6)
-Last updated: 2026-02-24
+Last updated: 2026-02-25
 Owner: Yoanna
 Repos: `quiet-curation-web`, `quiet-curation-mvp`
 
 ## 1) Current Snapshot
 
-### Overall P0 Status (as of 2026-02-24)
+### Overall P0 Status (as of 2026-02-25)
 - [x] P0-1 Subscribe flow decision + implementation
-- [ ] P0-2 Release QA gate full close (run 1 done, final full rerun pending)
+- [ ] P0-2 Release QA gate full close (rerun completed; manual blockers remain)
 - [x] P0-3 Stability baseline cleanup
 - [x] P0-4 Final docs sync (phase-level source-of-truth updated)
 
@@ -26,9 +26,11 @@ Repos: `quiet-curation-web`, `quiet-curation-mvp`
 - [x] Lint blocker in `quiet-curation-web/app/login-client.tsx` resolved.
 - [x] P0-2 release QA gate run 1 executed and logged:
   - `docs/testing/W05_D1_RELEASE_QA_GATE_LOG.md`.
+- [x] P0-2 release QA gate rerun executed after `/search-check` fix:
+  - `docs/testing/W05_D1_RELEASE_QA_GATE_LOG.md` updated (2026-02-25 run).
 
 ### Remaining (blocking MVP finish)
-- [ ] Release gate still has open FAIL/BLOCKED items (admin runtime actions, sign-out/mobile QA).
+- [ ] Release gate still has open FAIL/BLOCKED items (magic-link/login env block, mobile QA).
 - [ ] Internationalization is partial (many app strings still EN-first).
 - [ ] Final launch docs need one more pass after remaining QA blockers are closed.
 
@@ -150,9 +152,11 @@ MVP is considered finish-ready only when all below are true:
 - [x] Fix lint blocker in `app/login-client.tsx`.
 - [x] Refresh master docs after QA pass (Week 5-6 source-of-truth updated).
 - [x] Fix `/search-check` SQL mismatch and rerun targeted QA check.
-- [ ] Re-run full QA gate log after `/search-check` fix.
+- [x] Re-run full QA gate log after `/search-check` fix.
+- [x] Execute admin runtime QA for approve + set-today timing (`<= 3 minutes`).
+- [x] Execute logout runtime QA (`/profile` logout -> `/login`).
 - [ ] Complete remaining manual QA:
-  - magic-link callback/sign-out, admin approve/set-today timing, mobile viewport checks.
+  - magic-link callback, mobile viewport checks.
 
 ## Notes
 - This schedule replaces narrative-heavy planning with finish-oriented execution.
