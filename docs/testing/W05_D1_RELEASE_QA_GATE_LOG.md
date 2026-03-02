@@ -1,6 +1,6 @@
 # W05 Day1 Release QA Gate Log
 Date: 2026-02-23
-Last updated: 2026-02-25
+Last updated: 2026-02-26
 Owner: Yoanna + Codex
 Target repo: `quiet-curation-web`
 Environment: local `next start` (`http://localhost:3210`) with `.env.local`
@@ -81,6 +81,16 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
    - SQL applied in Supabase: `scripts/sql/emotion_events_memo_length_guard.sql`
    - probe insert with `memo_short` length `170` now fails with `23514`
    - constraint confirmed active: `emotion_events_memo_short_max_len`
+19. Admin ops partial checks close (2026-02-26, Playwright + API probe):
+   - `/admin/pairings` list/filter/approve re-run on QA rows:
+     - `status=all`: draft row approved successfully
+     - `status=approved`: approved row visible
+     - `status=draft`: approved row excluded
+   - approval validation for missing translation:
+     - approve on draft row bound to verse with empty translation produced `Verse translation is missing.`
+   - missing `verse_id` guard confirmed at DB layer:
+     - `pairings.verse_id = null` update probe rejected with `23502` (`not-null` constraint)
+   - result artifact: `/tmp/admin_ops_qa_result.json`
 
 ## Checklist Result (Pass/Fail/Blocked)
 
@@ -120,8 +130,8 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
 - [x] If no approved pairing, fallback uses FALLBACK_CURATION_ID. -> PASS (inference: no approved today row, cron still processes recipients via fallback path)
 
 ### Admin Ops QA
-- [ ] /admin/pairings lists, filters, and approves correctly. -> PARTIAL (list/filter render + approve runtime verified; filter behavior not fully exercised)
-- [ ] Approval validation blocks missing verse_id or translation. -> PARTIAL (runtime validation path confirmed; specific missing verse_id/translation case not run)
+- [x] /admin/pairings lists, filters, and approves correctly. -> PASS (runtime re-run verified list/filter behavior + approve transition)
+- [x] Approval validation blocks missing verse_id or translation. -> PASS (translation-missing message confirmed in UI; missing `verse_id` rejected by DB not-null guard `23502`)
 - [x] Uniqueness: only one approved pairing per (pairing_date, locale). -> PASS (DB unique constraint `pairings_date_locale_unique` confirmed)
 - [x] "Today pairing missing" banner appears when appropriate. -> PASS (rendered for admin with no approved EN pairing for today)
 
@@ -146,6 +156,12 @@ Execution mode: production build + local smoke + Supabase API policy checks (tem
    - invalid/test domains can still return provider validation errors
 4. Emotion memo limit is now enforced at DB-level.
    - >160 probe insert returns `23514` against `emotion_events_memo_short_max_len`
+5. `pairings.verse_id` is DB `NOT NULL`, so missing-verse approval is pre-blocked at persistence layer.
+6. Admin validation layering decision (2026-03-02):
+   - keep explicit app-layer `Verse is required.` check for faster editor feedback,
+     and keep DB `NOT NULL` as defense-in-depth.
+7. `verse_embeddings` read-policy check remains partial in this log:
+   - table was empty during QA runs, so row-level read behavior could not be fully exercised.
 
 ## Action Items
-1. Close remaining Admin Ops partial checks (`/admin/pairings` filter behavior, missing `verse_id/translation` validation case).
+1. Non-blocking follow-up: rerun `verse_embeddings` auth read check when at least one QA row exists.

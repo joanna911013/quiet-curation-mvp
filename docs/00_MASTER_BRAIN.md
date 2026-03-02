@@ -1,25 +1,28 @@
 # 00 Master Brain
-Last updated: 2026-02-23
+Last updated: 2026-03-02
 
 Quiet Curation MVP is in Week 5-6 closeout mode.
 This document is the top-level status and source-of-truth map.
 
 ## Current Stage
-- Week 5-6: MVP finish and release gate close
+- Week 5-6: MVP finish + launch closeout
 
 ### What is done
 - Landing and subscribe marketing flow implemented (`/landing` -> `/subscribe`).
-- `/subscribe` placeholder removed; magic-link request path wired.
-- Localized marketing routes runtime issue fixed:
-  - `/ko/landing`, `/ko/subscribe` now resolve.
-- Release QA gate run executed with evidence log.
+- `/subscribe` magic-link request flow is wired (placeholder removed).
+- Localized marketing route runtime issues are resolved:
+  - `/ko/landing`, `/ko/subscribe` route correctly.
+- Marketing KO copy parity pass applied on landing/subscribe/header surfaces (2026-03-02).
+- Release QA gate is closed with evidence:
+  - `/search-check` SQL mismatch fixed.
+  - admin runtime checks complete (`approve + set-today <= 3 min`).
+  - magic-link callback/login flow, logout redirect, and mobile viewport checks all PASS.
+  - emotion memo DB guard applied and verified.
 
-### What is still open (P0)
-- `/search-check` currently fails (`column v.text does not exist`).
-- Admin runtime action checks still pending:
-  - approve + set-today timing (`<= 3 min`) not yet recorded.
-- Full magic-link callback/login QA and sign-out redirect QA still pending.
-- Mobile viewport polish QA still pending.
+### What is still open
+- Internationalization is still partial in the signed-in app shell (many app strings EN-first).
+- `verse_embeddings` RLS verification remains partial because table is empty in QA runs.
+- No automated test suite yet (manual/route/script QA only).
 
 ## Source Of Truth
 - Active schedule: `weekly/W05_06_SCHEDULE.md`

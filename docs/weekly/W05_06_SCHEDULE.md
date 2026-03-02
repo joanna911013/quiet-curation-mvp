@@ -1,13 +1,13 @@
 # Quiet Curation - MVP Finish Schedule (Week 5-6)
-Last updated: 2026-02-25
+Last updated: 2026-03-02
 Owner: Yoanna
 Repos: `quiet-curation-web`, `quiet-curation-mvp`
 
 ## 1) Current Snapshot
 
-### Overall P0 Status (as of 2026-02-25)
+### Overall P0 Status (as of 2026-02-26)
 - [x] P0-1 Subscribe flow decision + implementation
-- [ ] P0-2 Release QA gate full close (rerun completed; manual blockers remain)
+- [x] P0-2 Release QA gate full close (admin partial checks closed on 2026-02-26)
 - [x] P0-3 Stability baseline cleanup
 - [x] P0-4 Final docs sync (phase-level source-of-truth updated)
 
@@ -28,11 +28,13 @@ Repos: `quiet-curation-web`, `quiet-curation-mvp`
   - `docs/testing/W05_D1_RELEASE_QA_GATE_LOG.md`.
 - [x] P0-2 release QA gate rerun executed after `/search-check` fix:
   - `docs/testing/W05_D1_RELEASE_QA_GATE_LOG.md` updated (2026-02-25 run).
+- [x] Marketing KO copy parity pass for conversion surfaces:
+  - `/ko/landing`, `/ko/subscribe`, localized marketing header labels (2026-03-02).
+- [x] Launch docs closeout pass executed:
+  - `00_MASTER_BRAIN.md` + `quiet-curation-web/README.md` updated to current state.
 
 ### Remaining (blocking MVP finish)
-- [ ] Release gate still has open FAIL/BLOCKED items (admin partial checks).
-- [ ] Internationalization is partial (many app strings still EN-first).
-- [ ] Final launch docs need one more pass after remaining QA blockers are closed.
+- [ ] Internationalization is still partial in signed-in app surfaces (marketing copy parity is done).
 
 ---
 
@@ -160,6 +162,13 @@ MVP is considered finish-ready only when all below are true:
   - mobile viewport checks -> PASS (re-run: Today compact card `92px`, 4/4 checks PASS).
 - [x] Apply DB-level memo guard in Supabase (`scripts/sql/emotion_events_memo_length_guard.sql`) and re-run emotion constraint check (`170` chars -> blocked with `23514`).
 - [x] Fix Today mobile card compact spec (2-line clamp, `80-96px`) and re-run mobile QA.
+- [x] Close Admin Ops partial checks:
+  - `/admin/pairings` list/filter/approve runtime verified
+  - missing translation approval blocked in UI
+  - missing `verse_id` blocked at DB layer (`23502` not-null)
+- [x] Decide admin validation layering:
+  - keep explicit app-layer `Verse is required.` check for clearer editor UX,
+    while retaining DB `NOT NULL` as a hard guard.
 
 ## Notes
 - This schedule replaces narrative-heavy planning with finish-oriented execution.
